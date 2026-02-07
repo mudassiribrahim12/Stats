@@ -1,0 +1,3215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StatCalc Pro | Statistical Calculator Suite</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --primary-light: #34495e;
+            --secondary: #3498db;
+            --accent: #2980b9;
+            --success: #27ae60;
+            --light: #ecf0f1;
+            --lighter: #ffffff;
+            --dark: #2c3e50;
+            --gray: #7b8793;
+            --border: #e0e6ed;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --radius: 12px;
+            
+            /* Light theme colors (default) */
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --text-light: #7b8793;
+            --header-bg: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            --tabs-bg: #2c3e50;
+            --input-bg: #ffffff;
+            --input-border: #e0e6ed;
+            --footer-bg: #2c3e50;
+            --footer-color: #ecf0f1;
+        }
+
+        /* Dark theme colors */
+        .dark-theme {
+            --bg-color: #1a1a2e;
+            --card-bg: #2d3047;
+            --text-color: #ffffff;
+            --text-light: #b0b3c1;
+            --header-bg: linear-gradient(135deg, #0d1440 0%, #1a237e 100%);
+            --tabs-bg: #1e2132;
+            --input-bg: #3a3d5a;
+            --input-border: #4a4d6a;
+            --footer-bg: #1e2132;
+            --footer-color: #b0b3c1;
+            --gray: #8a8da8;
+            --light: #2a2d48;
+            --lighter: #3a3d5a;
+            --border: #4a4d6a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Loading Animation */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        #loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-content {
+            text-align: center;
+            color: white;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        .atom-loader {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+        }
+
+        .atom-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid transparent;
+            border-top-color: #3498db;
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+        }
+
+        .atom-circle:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .atom-circle:nth-child(2) {
+            animation-delay: 0.2s;
+            border-top-color: #e74c3c;
+        }
+
+        .atom-circle:nth-child(3) {
+            animation-delay: 0.3s;
+            border-top-color: #27ae60;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loader-content h2 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .loader-content p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            font-weight: 400;
+            min-height: 100vh;
+            padding: 0;
+            font-size: 14px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Container for main content */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 30px;
+            flex: 1;
+        }
+
+        /* Full Width Header with Tabs */
+        .full-width-header {
+            background: var(--header-bg);
+            color: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 100;
+            width: 100%;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 30px 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.1);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo-icon {
+            font-size: 28px;
+            color: white;
+        }
+
+        .header-title h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: -0.5px;
+        }
+
+        .header-title p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            font-weight: 300;
+            line-height: 1.5;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .theme-icon {
+            font-size: 1.1rem;
+        }
+
+        .theme-text {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Tabs in Header */
+        .header-tabs {
+            background: var(--tabs-bg);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 20px;
+            overflow-x: auto;
+            width: 100%;
+        }
+
+        .tabs-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            padding: 0 30px;
+        }
+
+        .tab-btn {
+            padding: 15px 22px;
+            background: none;
+            border: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border-bottom: 3px solid var(--secondary);
+        }
+
+        .tab-btn i {
+            font-size: 1.1rem;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            padding: 30px 0;
+            flex: 1;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Home Tab Content */
+        .home-content {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 35px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+
+        .home-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .home-header h2 {
+            font-size: 2.2rem;
+            color: var(--text-color);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .home-header p {
+            font-size: 1.05rem;
+            color: var(--text-light);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .feature-card {
+            background: var(--lighter);
+            padding: 25px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .feature-icon {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Calculator Layout - Two Columns with Independent Scrolling */
+        .calculator-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            min-height: 600px;
+        }
+
+        /* Independent scrolling containers */
+        .scroll-container {
+            overflow-y: auto;
+            height: 100%;
+            padding-right: 15px;
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .scroll-container::-webkit-scrollbar-track {
+            background: var(--light);
+            border-radius: 4px;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 4px;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+
+        @media (max-width: 1200px) {
+            .main-container {
+                padding: 15px 20px;
+            }
+            
+            .header-content {
+                padding: 15px 20px 0 20px;
+            }
+            
+            .tabs-container {
+                padding: 0 20px;
+            }
+            
+            .calculator-layout {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            .scroll-container {
+                max-height: 50vh;
+                overflow-y: auto;
+            }
+        }
+
+        /* Input Panel */
+        .input-panel {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
+            height: 100%;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .panel-icon {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .panel-title h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 5px;
+            transition: color 0.3s ease;
+        }
+
+        .panel-title p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        /* Formula Display */
+        .formula-display {
+            background: linear-gradient(135deg, var(--light) 0%, rgba(0,0,0,0.03) 100%);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 4px solid var(--secondary);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+            transition: background 0.3s ease;
+        }
+
+        .formula-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .formula-header i {
+            color: var(--secondary);
+            font-size: 1.2rem;
+        }
+
+        .formula-header h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            transition: color 0.3s ease;
+        }
+
+        .formula-code {
+            font-family: 'Source Code Pro', monospace;
+            background: var(--input-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 12px 0;
+            border: 1px solid var(--border);
+            font-size: 1rem;
+            color: var(--text-color);
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .formula-description {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            transition: color 0.3s ease;
+        }
+
+        /* Input Groups */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--input-border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: var(--input-bg);
+            color: var(--text-color);
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .input-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+
+        /* Format hint for proportion input */
+        .format-hint {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 5px;
+            font-style: italic;
+            transition: color 0.3s ease;
+        }
+
+        /* Strata Management */
+        .strata-section {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid var(--light);
+            transition: border-color 0.3s ease;
+        }
+
+        .strata-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .strata-title {
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: color 0.3s ease;
+        }
+
+        .stratum-item {
+            background: var(--lighter);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--secondary);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+        }
+
+        .stratum-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .stratum-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .stratum-name {
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .stratum-controls button {
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            width: 34px;
+            height: 34px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: var(--text-light);
+        }
+
+        .stratum-controls button:hover {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 2px solid var(--light);
+            transition: border-color 0.3s ease;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--input-bg);
+            color: var(--text-color);
+            border: 2px solid var(--border);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, var(--success) 0%, #2ecc71 100%);
+            color: white;
+            padding: 10px 18px;
+            font-size: 0.9rem;
+        }
+
+        /* Checkbox for strata allocation */
+        .strata-option {
+            margin: 15px 0;
+            padding: 15px;
+            background: var(--lighter);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            font-weight: 500;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        /* Results Panel - Right Side */
+        .results-panel {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .results-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--light);
+            transition: border-color 0.3s ease;
+        }
+
+        .results-icon {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, var(--success) 0%, #2ecc71 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .results-title h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 5px;
+            transition: color 0.3s ease;
+        }
+
+        .results-title p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .results-content {
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .no-results {
+            text-align: center;
+            color: var(--text-light);
+            padding: 40px 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: color 0.3s ease;
+        }
+
+        .no-results i {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--light);
+            opacity: 0.6;
+            transition: color 0.3s ease;
+        }
+
+        .no-results h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .no-results p {
+            font-size: 0.95rem;
+            max-width: 350px;
+            line-height: 1.6;
+        }
+
+        .calculated-results {
+            display: none;
+            animation: fadeIn 0.4s ease;
+            flex-grow: 1;
+        }
+
+        .result-item {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--light);
+            transition: border-color 0.3s ease;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .result-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .result-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-color);
+            font-family: 'Source Code Pro', monospace;
+            transition: color 0.3s ease;
+        }
+
+        .result-description {
+            font-size: 0.95rem;
+            color: var(--text-color);
+            line-height: 1.7;
+            white-space: pre-line;
+            margin-top: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--light) 0%, rgba(0,0,0,0.03) 100%);
+            border-radius: 8px;
+            border-left: 4px solid var(--success);
+            transition: all 0.3s ease;
+        }
+
+        /* Calculation Steps */
+        .calculation-steps {
+            background: var(--input-bg);
+            padding: 18px;
+            border-radius: 8px;
+            margin-top: 18px;
+            border: 1px solid var(--border);
+        }
+
+        .calculation-steps h4 {
+            font-size: 0.95rem;
+            color: var(--text-color);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .calculation-steps ol {
+            padding-left: 20px;
+        }
+
+        .calculation-steps li {
+            margin-bottom: 8px;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        .calculation-steps strong {
+            color: var(--text-color);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--success) 0%, #2ecc71 100%);
+            color: white;
+            padding: 20px 28px;
+            border-radius: 10px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            gap: 15px;
+            animation: slideInRight 0.4s ease;
+            max-width: 350px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .notification-icon {
+            font-size: 1.5rem;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .notification-content h4 {
+            margin: 0 0 5px 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .notification-content p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeOutUp {
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(-20px); opacity: 0; }
+        }
+
+        /* Footer - Same as tabs background */
+        .site-footer {
+            background: var(--footer-bg);
+            color: var(--footer-color);
+            padding: 20px 0;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            text-align: center;
+        }
+
+        .footer-attribution {
+            margin-bottom: 8px;
+        }
+
+        .footer-attribution a {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .footer-attribution a:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+
+        .footer-copyright {
+            margin-top: 8px;
+            opacity: 0.8;
+            font-size: 0.75rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-container {
+                padding: 15px;
+            }
+            
+            .header-content {
+                padding: 15px 15px 0 15px;
+            }
+            
+            .tabs-container {
+                padding: 0 15px;
+            }
+            
+            .calculator-layout {
+                max-height: none;
+            }
+            
+            .footer-content {
+                padding: 0 15px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+            }
+            
+            .logo-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .theme-toggle {
+                margin-top: 8px;
+            }
+            
+            .tab-btn {
+                padding: 12px 18px;
+                font-size: 0.9rem;
+            }
+            
+            .tab-content {
+                padding: 20px 0;
+            }
+            
+            .input-panel, .results-panel {
+                padding: 25px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .strata-header {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-title h1 {
+                font-size: 1.7rem;
+            }
+            
+            .logo-circle {
+                width: 55px;
+                height: 55px;
+            }
+            
+            .logo-icon {
+                font-size: 25px;
+            }
+            
+            .panel-title h2, .results-title h2 {
+                font-size: 1.4rem;
+            }
+            
+            .formula-code {
+                font-size: 0.9rem;
+                padding: 12px;
+            }
+            
+            .result-value {
+                font-size: 1.6rem;
+            }
+            
+            .notification {
+                top: 15px;
+                right: 15px;
+                left: 15px;
+                max-width: none;
+                padding: 15px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-title h1 {
+                font-size: 1.5rem;
+            }
+            
+            .theme-toggle {
+                padding: 6px 12px;
+                font-size: 0.85rem;
+            }
+            
+            .tab-btn {
+                padding: 10px 12px;
+                font-size: 0.85rem;
+            }
+            
+            .tab-btn i {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body class="light-theme">
+    <!-- Loading Animation -->
+    <div id="loader">
+        <div class="loader-content">
+            <div class="atom-loader">
+                <div class="atom-circle"></div>
+                <div class="atom-circle"></div>
+                <div class="atom-circle"></div>
+            </div>
+            <h2>StatCalc Pro</h2>
+            <p>Advanced statistical calculators for research and analysis...</p>
+        </div>
+    </div>
+
+    <!-- Full Width Header with Tabs -->
+    <header class="full-width-header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo-circle">
+                    <i class="fas fa-calculator logo-icon"></i>
+                </div>
+                <div class="header-title">
+                    <h1>StatCalc Pro</h1>
+                    <p>Advanced statistical calculators for research and analysis</p>
+                </div>
+            </div>
+            
+            <!-- Theme Toggle -->
+            <div class="theme-toggle" id="themeToggle">
+                <div class="theme-icon" id="themeIcon">
+                    <i class="fas fa-moon"></i>
+                </div>
+                <div class="theme-text" id="themeText">Dark Theme</div>
+            </div>
+        </div>
+        
+        <!-- Tabs in Header -->
+        <div class="header-tabs">
+            <div class="tabs-container">
+                <button class="tab-btn active" data-tab="home">
+                    <i class="fas fa-home"></i>
+                    Home
+                </button>
+                <button class="tab-btn" data-tab="proportional">
+                    <i class="fas fa-chart-pie"></i>
+                    Proportional Allocation
+                </button>
+                <button class="tab-btn" data-tab="yamane">
+                    <i class="fas fa-calculator"></i>
+                    Taro Yamane
+                </button>
+                <button class="tab-btn" data-tab="cochran">
+                    <i class="fas fa-percentage"></i>
+                    Cochran Formula
+                </button>
+                <button class="tab-btn" data-tab="other">
+                    <i class="fas fa-shapes"></i>
+                    Other Formulas
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <div class="main-container">
+        <!-- Notification -->
+        <div class="notification" id="notification">
+            <div class="notification-icon" id="notificationIcon">
+                <i class="fas fa-check"></i>
+            </div>
+            <div class="notification-content">
+                <h4 id="notificationTitle">Calculation Complete!</h4>
+                <p id="notificationMessage">Your sample size has been calculated.</p>
+            </div>
+        </div>
+
+        <!-- Home Tab -->
+        <div class="tab-content active" id="home-tab">
+            <div class="home-content">
+                <div class="home-header">
+                    <h2>Welcome to StatCalc Pro</h2>
+                    <p>Your comprehensive statistical calculator suite for research, academic, and professional analysis</p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h3>Proportional Allocation</h3>
+                        <p>Allocate sample sizes proportionally across population strata with non-response adjustment and detailed calculation steps.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <h3>Taro Yamane Formula</h3>
+                        <p>Calculate sample size for finite populations with a simple, widely-used formula that includes optional non-response adjustments.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <h3>Cochran's Formula</h3>
+                        <p>Advanced sample size calculation for proportions with flexible input formats (decimal, percentage, or with symbol).</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shapes"></i>
+                        </div>
+                        <h3>Other Statistical Formulas</h3>
+                        <p>Comprehensive collection including mean estimation (known and unknown variance), proportion difference, correlation, and regression analysis.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card" style="margin-top: 20px;">
+                    <div class="feature-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h3>Advanced Stratification</h3>
+                    <p>All calculators feature optional stratification with proportional allocation, allowing you to specify stratum sizes and see individual sample sizes for each group.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Proportional Allocation Tab -->
+        <div class="tab-content" id="proportional-tab">
+            <div class="calculator-layout">
+                <!-- Left Panel - Inputs -->
+                <div class="scroll-container">
+                    <div class="input-panel">
+                        <div class="panel-header">
+                            <div class="panel-icon">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <div class="panel-title">
+                                <h2>Proportional Allocation</h2>
+                                <p>Allocate sample size proportionally across population strata</p>
+                            </div>
+                        </div>
+
+                        <!-- Formula Display -->
+                        <div class="formula-display">
+                            <div class="formula-header">
+                                <i class="fas fa-square-root-alt"></i>
+                                <h3>Formula</h3>
+                            </div>
+                            <div class="formula-code">n_i = (N_i / N) × n</div>
+                            <div class="formula-description">
+                                Where n_i is the sample size for stratum i, N_i is the population of stratum i, 
+                                N is the total population, and n is the total sample size. This ensures each 
+                                stratum is represented proportionally to its size in the population.
+                            </div>
+                        </div>
+
+                        <!-- Parameters -->
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="total-sample">
+                                    <i class="fas fa-users"></i>
+                                    Total Sample Size (n)
+                                </label>
+                                <input type="number" id="total-sample" value="100" min="1">
+                            </div>
+                            <div class="input-group">
+                                <label for="non-response">
+                                    <i class="fas fa-user-slash"></i>
+                                    Non-Response Rate (%)
+                                </label>
+                                <input type="number" id="non-response" value="0" min="0" max="100" step="1" class="non-response-input">
+                            </div>
+                        </div>
+
+                        <div class="strata-section">
+                            <div class="strata-header">
+                                <div class="strata-title">
+                                    <i class="fas fa-layer-group"></i>
+                                    Strata Management
+                                </div>
+                                <button class="btn btn-add" onclick="addStratum('proportional')">
+                                    <i class="fas fa-plus"></i>
+                                    Add Stratum
+                                </button>
+                            </div>
+                            <div id="strata-container-proportional">
+                                <!-- Strata will be dynamically added here -->
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" onclick="calculateProportional()">
+                                <i class="fas fa-calculator"></i>
+                                Calculate Allocation
+                            </button>
+                            <button class="btn btn-secondary" onclick="resetProportional()">
+                                <i class="fas fa-redo"></i>
+                                Reset Parameters
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel - Results -->
+                <div class="scroll-container">
+                    <div class="results-panel">
+                        <div class="results-header">
+                            <div class="results-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="results-title">
+                                <h2>Results</h2>
+                                <p>Proportional allocation calculation results</p>
+                            </div>
+                        </div>
+
+                        <div class="results-content">
+                            <div class="no-results" id="proportional-no-results">
+                                <i class="fas fa-chart-pie"></i>
+                                <h3>Ready to Calculate</h3>
+                                <p>Enter your parameters and click "Calculate Allocation" to see the proportional distribution results here.</p>
+                            </div>
+                            <div class="calculated-results" id="proportional-results">
+                                <!-- Results will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Taro Yamane Tab -->
+        <div class="tab-content" id="yamane-tab">
+            <div class="calculator-layout">
+                <!-- Left Panel - Inputs -->
+                <div class="scroll-container">
+                    <div class="input-panel">
+                        <div class="panel-header">
+                            <div class="panel-icon">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <div class="panel-title">
+                                <h2>Taro Yamane Formula</h2>
+                                <p>Calculate sample size for finite populations</p>
+                            </div>
+                        </div>
+
+                        <!-- Formula Display -->
+                        <div class="formula-display">
+                            <div class="formula-header">
+                                <i class="fas fa-square-root-alt"></i>
+                                <h3>Formula</h3>
+                            </div>
+                            <div class="formula-code">n = N / (1 + N × e²)</div>
+                            <div class="formula-description">
+                                Where n is the sample size, N is the population size, and e is the margin of error. 
+                                This formula assumes a 95% confidence level (Z = 1.96) and is suitable for finite 
+                                populations where the sample will be a significant proportion of the population.
+                            </div>
+                        </div>
+
+                        <!-- Parameters -->
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="population-yamane">
+                                    <i class="fas fa-globe"></i>
+                                    Population Size (N)
+                                </label>
+                                <input type="number" id="population-yamane" value="1000" min="1">
+                            </div>
+                            <div class="input-group">
+                                <label for="margin-error-yamane">
+                                    <i class="fas fa-bullseye"></i>
+                                    Margin of Error (e)
+                                </label>
+                                <input type="number" id="margin-error-yamane" value="0.05" min="0.01" max="1" step="0.01">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="non-response-yamane">
+                                <i class="fas fa-user-slash"></i>
+                                Non-Response Rate (%)
+                            </label>
+                            <input type="number" id="non-response-yamane" value="0" min="0" max="100" step="1" class="non-response-input">
+                        </div>
+
+                        <!-- Strata Option for Yamane -->
+                        <div class="strata-option">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="strata-option-yamane" onchange="toggleStrata('yamane')">
+                                <label for="strata-option-yamane">Allocate sample size across strata?</label>
+                            </div>
+                            <div id="strata-section-yamane" style="display: none; margin-top: 15px;">
+                                <div class="strata-header">
+                                    <div class="strata-title">
+                                        <i class="fas fa-layer-group"></i>
+                                        Strata Management
+                                    </div>
+                                    <button class="btn btn-add" onclick="addStratum('yamane')">
+                                        <i class="fas fa-plus"></i>
+                                        Add Stratum
+                                    </button>
+                                </div>
+                                <div id="strata-container-yamane">
+                                    <!-- Strata will be dynamically added here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" onclick="calculateYamane()">
+                                <i class="fas fa-calculator"></i>
+                                Calculate Sample Size
+                            </button>
+                            <button class="btn btn-secondary" onclick="resetYamane()">
+                                <i class="fas fa-redo"></i>
+                                Reset Parameters
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel - Results -->
+                <div class="scroll-container">
+                    <div class="results-panel">
+                        <div class="results-header">
+                            <div class="results-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="results-title">
+                                <h2>Results</h2>
+                                <p>Taro Yamane calculation results</p>
+                            </div>
+                        </div>
+
+                        <div class="results-content">
+                            <div class="no-results" id="yamane-no-results">
+                                <i class="fas fa-calculator"></i>
+                                <h3>Ready to Calculate</h3>
+                                <p>Enter population size and margin of error, then click "Calculate Sample Size" to see results here.</p>
+                            </div>
+                            <div class="calculated-results" id="yamane-results">
+                                <!-- Results will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cochran Formula Tab -->
+        <div class="tab-content" id="cochran-tab">
+            <div class="calculator-layout">
+                <!-- Left Panel - Inputs -->
+                <div class="scroll-container">
+                    <div class="input-panel">
+                        <div class="panel-header">
+                            <div class="panel-icon">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                            <div class="panel-title">
+                                <h2>Cochran's Formula</h2>
+                                <p>Sample size calculation for proportions with flexible input formats</p>
+                            </div>
+                        </div>
+
+                        <!-- Formula Display -->
+                        <div class="formula-display">
+                            <div class="formula-header">
+                                <i class="fas fa-square-root-alt"></i>
+                                <h3>Formula</h3>
+                            </div>
+                            <div class="formula-code">n₀ = Z² × p × (1-p) / e²</div>
+                            <div class="formula-description">
+                                For finite populations: n = n₀ / (1 + (n₀ - 1)/N)
+                                <br><br>
+                                Where Z is the Z-score for the confidence level, p is the estimated proportion, 
+                                e is the margin of error, and N is the population size (optional for finite population correction).
+                                Accepts multiple input formats: 0.50, 50, or 50%.
+                            </div>
+                        </div>
+
+                        <!-- Parameters -->
+                        <div class="input-group">
+                            <label for="proportion-cochran">
+                                <i class="fas fa-chart-bar"></i>
+                                Estimated Proportion (p)
+                            </label>
+                            <input type="text" id="proportion-cochran" value="50%" placeholder="Enter as 0.5, 50, or 50%">
+                            <div class="format-hint">Accepts: 0.50 (decimal), 50 (percentage), or 50% (with symbol)</div>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="z-score-cochran">
+                                    <i class="fas fa-chart-line"></i>
+                                    Confidence Level
+                                </label>
+                                <select id="z-score-cochran">
+                                    <option value="1.645">90% Confidence (Z = 1.645)</option>
+                                    <option value="1.96" selected>95% Confidence (Z = 1.96)</option>
+                                    <option value="2.576">99% Confidence (Z = 2.576)</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="margin-cochran">
+                                    <i class="fas fa-bullseye"></i>
+                                    Margin of Error (e)
+                                </label>
+                                <input type="number" id="margin-cochran" value="0.05" min="0.01" max="1" step="0.01">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="population-cochran">
+                                <i class="fas fa-users"></i>
+                                Population Size (Optional)
+                            </label>
+                            <input type="number" id="population-cochran" placeholder="Leave empty for infinite population">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="non-response-cochran">
+                                <i class="fas fa-user-slash"></i>
+                                Non-Response Rate (%)
+                            </label>
+                            <input type="number" id="non-response-cochran" value="0" min="0" max="100" step="1" class="non-response-input">
+                        </div>
+
+                        <!-- Strata Option for Cochran -->
+                        <div class="strata-option">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="strata-option-cochran" onchange="toggleStrata('cochran')">
+                                <label for="strata-option-cochran">Allocate sample size across strata?</label>
+                            </div>
+                            <div id="strata-section-cochran" style="display: none; margin-top: 15px;">
+                                <div class="strata-header">
+                                    <div class="strata-title">
+                                        <i class="fas fa-layer-group"></i>
+                                        Strata Management
+                                    </div>
+                                    <button class="btn btn-add" onclick="addStratum('cochran')">
+                                        <i class="fas fa-plus"></i>
+                                        Add Stratum
+                                    </button>
+                                </div>
+                                <div id="strata-container-cochran">
+                                    <!-- Strata will be dynamically added here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" onclick="calculateCochran()">
+                                <i class="fas fa-calculator"></i>
+                                Calculate Sample Size
+                            </button>
+                            <button class="btn btn-secondary" onclick="resetCochran()">
+                                <i class="fas fa-redo"></i>
+                                Reset Parameters
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel - Results -->
+                <div class="scroll-container">
+                    <div class="results-panel">
+                        <div class="results-header">
+                            <div class="results-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="results-title">
+                                <h2>Results</h2>
+                                <p>Cochran formula calculation results</p>
+                            </div>
+                        </div>
+
+                        <div class="results-content">
+                            <div class="no-results" id="cochran-no-results">
+                                <i class="fas fa-percentage"></i>
+                                <h3>Ready to Calculate</h3>
+                                <p>Enter proportion, confidence level, and margin of error, then click "Calculate Sample Size" to see results here.</p>
+                            </div>
+                            <div class="calculated-results" id="cochran-results">
+                                <!-- Results will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other Formulas Tab -->
+        <div class="tab-content" id="other-tab">
+            <div class="calculator-layout">
+                <!-- Left Panel - Inputs -->
+                <div class="scroll-container">
+                    <div class="input-panel">
+                        <div class="panel-header">
+                            <div class="panel-icon">
+                                <i class="fas fa-shapes"></i>
+                            </div>
+                            <div class="panel-title">
+                                <h2>Other Statistical Formulas</h2>
+                                <p>Additional statistical formulas for various study designs</p>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="formula-type">
+                                <i class="fas fa-clipboard-list"></i>
+                                Select Formula Type
+                            </label>
+                            <select id="formula-type" onchange="updateOtherFormulaInputs()">
+                                <option value="single-proportion">Single Population Proportion</option>
+                                <option value="mean-known">Mean Estimation (Known Variance)</option>
+                                <option value="mean-unknown">Mean Estimation (Unknown Variance)</option>
+                                <option value="proportion-diff">Proportion Difference</option>
+                                <option value="correlation">Correlation Coefficient</option>
+                                <option value="regression">Regression Analysis</option>
+                            </select>
+                        </div>
+
+                        <!-- Formula Display (Dynamic) -->
+                        <div class="formula-display" id="other-formula-display">
+                            <div class="formula-header">
+                                <i class="fas fa-square-root-alt"></i>
+                                <h3 id="other-formula-title">Formula</h3>
+                            </div>
+                            <div class="formula-code" id="other-formula-code">Select a formula type</div>
+                            <div class="formula-description" id="other-formula-description">
+                                Select a formula type from the dropdown to see the formula and description here.
+                            </div>
+                        </div>
+
+                        <!-- Dynamic inputs based on selected formula type -->
+                        <div id="other-formula-inputs">
+                            <!-- Inputs will be dynamically generated -->
+                        </div>
+
+                        <div class="input-group">
+                            <label for="non-response-other">
+                                <i class="fas fa-user-slash"></i>
+                                Non-Response Rate (%)
+                            </label>
+                            <input type="number" id="non-response-other" value="0" min="0" max="100" step="1" class="non-response-input">
+                        </div>
+
+                        <!-- Strata Option for Other Formulas -->
+                        <div class="strata-option">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="strata-option-other" onchange="toggleStrata('other')">
+                                <label for="strata-option-other">Allocate sample size across strata?</label>
+                            </div>
+                            <div id="strata-section-other" style="display: none; margin-top: 15px;">
+                                <div class="strata-header">
+                                    <div class="strata-title">
+                                        <i class="fas fa-layer-group"></i>
+                                        Strata Management
+                                    </div>
+                                    <button class="btn btn-add" onclick="addStratum('other')">
+                                        <i class="fas fa-plus"></i>
+                                        Add Stratum
+                                    </button>
+                                </div>
+                                <div id="strata-container-other">
+                                    <!-- Strata will be dynamically added here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" onclick="calculateOther()">
+                                <i class="fas fa-calculator"></i>
+                                Calculate Sample Size
+                            </button>
+                            <button class="btn btn-secondary" onclick="resetOther()">
+                                <i class="fas fa-redo"></i>
+                                Reset Parameters
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel - Results -->
+                <div class="scroll-container">
+                    <div class="results-panel">
+                        <div class="results-header">
+                            <div class="results-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="results-title">
+                                <h2>Results</h2>
+                                <p>Statistical formula calculation results</p>
+                            </div>
+                        </div>
+
+                        <div class="results-content">
+                            <div class="no-results" id="other-no-results">
+                                <i class="fas fa-shapes"></i>
+                                <h3>Ready to Calculate</h3>
+                                <p>Select a formula type, enter parameters, then click "Calculate Sample Size" to see results here.</p>
+                            </div>
+                            <div class="calculated-results" id="other-results">
+                                <!-- Results will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Site Footer (only shows on Home tab) -->
+    <footer class="site-footer" id="siteFooter">
+        <div class="footer-content">
+            <div class="footer-attribution">
+                Created by <a href="https://www.mudasiribrahim.com" target="_blank" rel="noopener noreferrer">
+                    Mudasir Mohammed Ibrahim
+                </a>
+            </div>
+            <div class="footer-copyright">
+                Copyright © <span id="copyrightYear"></span> StatCalc Pro. All calculations are estimates for planning purposes.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Global variables
+        let currentTab = 'home';
+        let isDarkTheme = false;
+        let strataCounts = {
+            proportional: 1,
+            yamane: 0,
+            cochran: 0,
+            other: 0
+        };
+
+        // Loading Screen
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 1500);
+        });
+
+        // Theme Toggle Functionality
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+            
+            isDarkTheme = !isDarkTheme;
+            
+            if (isDarkTheme) {
+                body.classList.remove('light-theme');
+                body.classList.add('dark-theme');
+                themeIcon.innerHTML = '<i class="fas fa-sun"></i>';
+                themeText.textContent = 'Light Theme';
+            } else {
+                body.classList.remove('dark-theme');
+                body.classList.add('light-theme');
+                themeIcon.innerHTML = '<i class="fas fa-moon"></i>';
+                themeText.textContent = 'Dark Theme';
+            }
+            
+            // Save theme preference to localStorage
+            localStorage.setItem('statcalc-theme', isDarkTheme ? 'dark' : 'light');
+        }
+
+        // Handle non-response input validation
+        function setupNonResponseInputs() {
+            const nonResponseInputs = document.querySelectorAll('.non-response-input');
+            
+            nonResponseInputs.forEach(input => {
+                // Set default value to 0 if empty
+                if (!input.value.trim()) {
+                    input.value = 0;
+                }
+                
+                // Add event listener for blur event
+                input.addEventListener('blur', function() {
+                    const value = this.value.trim();
+                    if (value === '' || isNaN(parseFloat(value))) {
+                        this.value = 0;
+                    } else {
+                        const numValue = parseFloat(value);
+                        if (numValue < 0) {
+                            this.value = 0;
+                        } else if (numValue > 100) {
+                            this.value = 100;
+                        } else {
+                            this.value = numValue;
+                        }
+                    }
+                });
+                
+                // Add event listener for input validation
+                input.addEventListener('input', function() {
+                    const value = this.value;
+                    if (value && !/^\d*\.?\d*$/.test(value)) {
+                        // Remove non-numeric characters except decimal point
+                        this.value = value.replace(/[^\d.]/g, '');
+                    }
+                });
+            });
+        }
+
+        // Enhanced parseProportion function for multiple formats
+        function parseProportion(input) {
+            if (!input) return 0.5;
+            
+            let cleanInput = input.toString().trim();
+            
+            // Remove any non-numeric characters except decimal point and minus sign
+            cleanInput = cleanInput.replace(/[^\d.%\-]/g, '');
+            
+            // Handle percentage format (50%)
+            if (cleanInput.includes('%')) {
+                const percentValue = parseFloat(cleanInput.replace('%', ''));
+                if (!isNaN(percentValue)) {
+                    return percentValue / 100;
+                }
+            }
+            
+            // Handle decimal or whole number
+            const numericValue = parseFloat(cleanInput);
+            
+            if (!isNaN(numericValue)) {
+                // If number is between 0 and 1, treat as decimal
+                if (numericValue >= 0 && numericValue <= 1) {
+                    return numericValue;
+                }
+                // If number is between 1 and 100, treat as percentage
+                else if (numericValue > 1 && numericValue <= 100) {
+                    return numericValue / 100;
+                }
+                // If number is > 100, cap at 100%
+                else if (numericValue > 100) {
+                    return 1;
+                }
+                // If negative, use absolute value
+                else if (numericValue < 0) {
+                    return Math.abs(numericValue) / 100;
+                }
+            }
+            
+            // Default fallback
+            return 0.5;
+        }
+
+        // Format proportion for display
+        function formatProportionForDisplay(value) {
+            if (value >= 0 && value <= 1) {
+                // Return as percentage by default for user-friendly display
+                return (value * 100).toFixed(1) + '%';
+            }
+            return value;
+        }
+
+        // Notification function
+        function showNotification(title, message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const icon = document.getElementById('notificationIcon');
+            const titleEl = document.getElementById('notificationTitle');
+            const messageEl = document.getElementById('notificationMessage');
+            
+            // Set notification type
+            let bgColor, iconClass;
+            switch(type) {
+                case 'success':
+                    bgColor = 'linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)';
+                    iconClass = 'fas fa-check';
+                    break;
+                case 'info':
+                    bgColor = 'linear-gradient(135deg, #3498db 0%, #2980b9 100%)';
+                    iconClass = 'fas fa-info-circle';
+                    break;
+                case 'warning':
+                    bgColor = 'linear-gradient(135deg, #e67e22 0%, #f39c12 100%)';
+                    iconClass = 'fas fa-exclamation-triangle';
+                    break;
+            }
+            
+            notification.style.background = bgColor;
+            icon.innerHTML = `<i class="${iconClass}"></i>`;
+            titleEl.textContent = title;
+            messageEl.textContent = message;
+            
+            // Show notification
+            notification.style.display = 'flex';
+            
+            // Hide after 4 seconds
+            setTimeout(() => {
+                notification.style.animation = 'fadeOutUp 0.5s ease';
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                    notification.style.animation = 'slideInRight 0.4s ease';
+                }, 500);
+            }, 4000);
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set copyright year
+            document.getElementById('copyrightYear').textContent = new Date().getFullYear();
+            
+            // Load saved theme preference
+            const savedTheme = localStorage.getItem('statcalc-theme');
+            if (savedTheme === 'dark') {
+                toggleTheme(); // Switch to dark theme if saved
+            }
+            
+            // Theme toggle event listener
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+            
+            // Create initial stratum for proportional allocation
+            createInitialStratum('proportional');
+            
+            // Set up non-response input handling
+            setupNonResponseInputs();
+            
+            // Set up tab switching
+            document.querySelectorAll('.tab-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Update active tab button
+                    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Get tab id
+                    currentTab = this.getAttribute('data-tab');
+                    
+                    // Hide all tab contents
+                    document.querySelectorAll('.tab-content').forEach(tab => {
+                        tab.classList.remove('active');
+                    });
+                    
+                    // Show selected tab content
+                    document.getElementById(`${currentTab}-tab`).classList.add('active');
+                    
+                    // Show/hide footer based on tab
+                    const footer = document.getElementById('siteFooter');
+                    if (currentTab === 'home') {
+                        footer.style.display = 'block';
+                    } else {
+                        footer.style.display = 'none';
+                    }
+                    
+                    // Clear results for the new tab (if not home)
+                    if (currentTab !== 'home') {
+                        clearResults(currentTab);
+                    }
+                    
+                    // Re-setup non-response inputs for new tab
+                    setTimeout(() => {
+                        setupNonResponseInputs();
+                    }, 100);
+                });
+            });
+            
+            // Set up formula type change for other formulas
+            document.getElementById('formula-type').addEventListener('change', updateOtherFormulaInputs);
+            
+            // Initialize other formula inputs and display
+            updateOtherFormulaInputs();
+            
+            // Set up non-response input for Other Formulas tab
+            setTimeout(() => {
+                setupNonResponseInputs();
+            }, 100);
+            
+            // Add input format examples to Cochran proportion field
+            const proportionInput = document.getElementById('proportion-cochran');
+            if (proportionInput) {
+                proportionInput.addEventListener('focus', function() {
+                    if (this.value === '0.5') {
+                        this.value = '50%';
+                    }
+                });
+                
+                proportionInput.addEventListener('blur', function() {
+                    // Validate and format the input
+                    const parsedValue = parseProportion(this.value);
+                    if (!isNaN(parsedValue)) {
+                        this.value = formatProportionForDisplay(parsedValue);
+                    }
+                });
+            }
+            
+            // Show welcome notification after a short delay
+            setTimeout(() => {
+                showNotification('Welcome to StatCalc Pro!', 'Explore different calculators using the tabs above.', 'info');
+            }, 2000);
+        });
+
+        // Create initial stratum for proportional allocation
+        function createInitialStratum(tab) {
+            const container = document.getElementById(`strata-container-${tab}`);
+            if (container) {
+                strataCounts[tab] = 1;
+                container.innerHTML = `
+                    <div class="stratum-item" id="stratum-${tab}-1">
+                        <div class="stratum-header">
+                            <div class="stratum-name">Stratum 1</div>
+                            <div class="stratum-controls">
+                                <button onclick="removeStratum('${tab}', 1)" ${strataCounts[tab] <= 1 ? 'disabled style="opacity:0.5"' : ''}>
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label><i class="fas fa-tag"></i> Stratum Name</label>
+                                <input type="text" id="stratum-name-${tab}-1" value="Stratum 1">
+                            </div>
+                            <div class="input-group">
+                                <label><i class="fas fa-users"></i> Population Size</label>
+                                <input type="number" id="stratum-pop-${tab}-1" value="100" min="1">
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Toggle strata visibility
+        function toggleStrata(tab) {
+            const checkbox = document.getElementById(`strata-option-${tab}`);
+            const strataSection = document.getElementById(`strata-section-${tab}`);
+            
+            if (checkbox.checked) {
+                strataSection.style.display = 'block';
+                if (strataCounts[tab] === 0) {
+                    createInitialStratum(tab);
+                }
+            } else {
+                strataSection.style.display = 'none';
+            }
+        }
+
+        // Add a new stratum
+        function addStratum(tab) {
+            strataCounts[tab]++;
+            const container = document.getElementById(`strata-container-${tab}`);
+            if (!container) return;
+            
+            const newStratum = document.createElement('div');
+            newStratum.className = 'stratum-item';
+            newStratum.id = `stratum-${tab}-${strataCounts[tab]}`;
+            newStratum.innerHTML = `
+                <div class="stratum-header">
+                    <div class="stratum-name">Stratum ${strataCounts[tab]}</div>
+                    <div class="stratum-controls">
+                        <button onclick="removeStratum('${tab}', ${strataCounts[tab]})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label><i class="fas fa-tag"></i> Stratum Name</label>
+                        <input type="text" id="stratum-name-${tab}-${strataCounts[tab]}" value="Stratum ${strataCounts[tab]}">
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fas fa-users"></i> Population Size</label>
+                        <input type="number" id="stratum-pop-${tab}-${strataCounts[tab]}" value="100" min="1">
+                    </div>
+                </div>
+            `;
+            container.appendChild(newStratum);
+            updateRemoveButtons(tab);
+        }
+
+        // Remove a stratum
+        function removeStratum(tab, id) {
+            if (strataCounts[tab] <= 1) return;
+            
+            const stratum = document.getElementById(`stratum-${tab}-${id}`);
+            if (stratum) {
+                stratum.remove();
+                strataCounts[tab]--;
+                
+                // Renumber remaining strata
+                const container = document.getElementById(`strata-container-${tab}`);
+                if (container) {
+                    const strata = container.querySelectorAll('.stratum-item');
+                    strata.forEach((stratum, index) => {
+                        const newId = index + 1;
+                        stratum.id = `stratum-${tab}-${newId}`;
+                        stratum.querySelector('.stratum-name').textContent = `Stratum ${newId}`;
+                        
+                        const nameInput = stratum.querySelector('input[type="text"]');
+                        nameInput.id = `stratum-name-${tab}-${newId}`;
+                        nameInput.value = nameInput.value.replace(/Stratum \d+/, `Stratum ${newId}`);
+                        
+                        const popInput = stratum.querySelector('input[type="number"]');
+                        popInput.id = `stratum-pop-${tab}-${newId}`;
+                    });
+                }
+                
+                updateRemoveButtons(tab);
+            }
+        }
+
+        // Update remove buttons
+        function updateRemoveButtons(tab) {
+            const container = document.getElementById(`strata-container-${tab}`);
+            if (container) {
+                const removeButtons = container.querySelectorAll('.stratum-controls button');
+                removeButtons.forEach(btn => {
+                    if (strataCounts[tab] <= 1) {
+                        btn.disabled = true;
+                        btn.style.opacity = '0.5';
+                    } else {
+                        btn.disabled = false;
+                        btn.style.opacity = '1';
+                    }
+                });
+            }
+        }
+
+        // Clear results for a specific tab
+        function clearResults(tabName) {
+            document.getElementById(`${tabName}-no-results`).style.display = 'flex';
+            document.getElementById(`${tabName}-results`).style.display = 'none';
+            document.getElementById(`${tabName}-results`).innerHTML = '';
+        }
+
+        // Show results for a specific tab
+        function showResults(tabName, resultsHTML) {
+            document.getElementById(`${tabName}-no-results`).style.display = 'none';
+            document.getElementById(`${tabName}-results`).innerHTML = resultsHTML;
+            document.getElementById(`${tabName}-results`).style.display = 'block';
+        }
+
+        // Get strata data for a specific tab
+        function getStrataData(tab) {
+            const strata = [];
+            let totalPopulation = 0;
+            
+            for (let i = 1; i <= strataCounts[tab]; i++) {
+                const name = document.getElementById(`stratum-name-${tab}-${i}`)?.value || `Stratum ${i}`;
+                const population = parseFloat(document.getElementById(`stratum-pop-${tab}-${i}`)?.value) || 0;
+                
+                if (population > 0) {
+                    strata.push({ name, population });
+                    totalPopulation += population;
+                }
+            }
+            
+            return { strata, totalPopulation };
+        }
+
+        // Allocate samples proportionally across strata
+        function allocateSamplesProportionally(strata, totalPopulation, sampleSize, stepDetails) {
+            let allocations = [];
+            let totalAllocated = 0;
+            
+            stepDetails += `\n\n<strong>Proportional Allocation by Stratum:</strong>`;
+            stepDetails += `\nFormula: n_i = (N_i / N) × n`;
+            
+            // Calculate proportional allocation
+            strata.forEach((stratum, index) => {
+                const proportion = stratum.population / totalPopulation;
+                const rawAllocation = proportion * sampleSize;
+                const roundedAllocation = Math.floor(rawAllocation);
+                
+                allocations.push({
+                    name: stratum.name,
+                    population: stratum.population,
+                    proportion: proportion,
+                    rawAllocation: rawAllocation,
+                    allocation: roundedAllocation
+                });
+                
+                totalAllocated += roundedAllocation;
+                
+                stepDetails += `\n${index+1}. ${stratum.name}: (${stratum.population} / ${totalPopulation}) × ${sampleSize} = ${rawAllocation.toFixed(2)} → ${roundedAllocation}`;
+            });
+            
+            // Distribute remaining samples
+            let remaining = sampleSize - totalAllocated;
+            if (remaining > 0) {
+                stepDetails += `\n\n<strong>Distribution of remaining samples:</strong>`;
+                stepDetails += `\nRemaining samples after rounding: ${remaining}`;
+                
+                allocations.sort((a, b) => (b.rawAllocation - b.allocation) - (a.rawAllocation - a.allocation));
+                
+                for (let i = 0; i < remaining; i++) {
+                    allocations[i].allocation++;
+                    stepDetails += `\nAdd 1 to ${allocations[i].name}`;
+                }
+            }
+            
+            return { allocations, stepDetails };
+        }
+
+        // Proportional Allocation Calculation with detailed steps
+        function calculateProportional() {
+            const totalSample = parseFloat(document.getElementById('total-sample').value) || 0;
+            const nonResponseInput = document.getElementById('non-response').value.trim();
+            const nonResponse = nonResponseInput === '' ? 0 : parseFloat(nonResponseInput) || 0;
+            
+            // Get strata data
+            const { strata, totalPopulation } = getStrataData('proportional');
+            
+            if (totalPopulation === 0) {
+                showNotification('Input Required', 'Please enter population values for strata.', 'warning');
+                return;
+            }
+            
+            if (totalSample === 0) {
+                showNotification('Input Required', 'Please enter total sample size.', 'warning');
+                return;
+            }
+            
+            // Step-by-step calculation details
+            let stepDetails = `<strong>Step-by-Step Calculation:</strong>`;
+            stepDetails += `\n1. Total population (N): ${totalPopulation}`;
+            stepDetails += `\n2. Total sample size (n): ${totalSample}`;
+            stepDetails += `\n3. Non-response rate: ${nonResponse}%`;
+            
+            // Calculate adjusted sample size for non-response (if non-zero)
+            let adjustedSample = totalSample;
+            if (nonResponse > 0) {
+                stepDetails += `\n4. Adjustment factor: 1 / (1 - ${nonResponse}/100) = ${(1/(1-nonResponse/100)).toFixed(4)}`;
+                adjustedSample = Math.ceil(totalSample / (1 - nonResponse / 100));
+                stepDetails += `\n5. Adjusted sample size: ${totalSample} / (1 - ${nonResponse}/100) = ${adjustedSample}`;
+            } else {
+                stepDetails += `\n4. Non-response rate is 0%, no adjustment needed.`;
+            }
+            
+            // Allocate samples proportionally
+            const allocationResult = allocateSamplesProportionally(strata, totalPopulation, adjustedSample, stepDetails);
+            const { allocations, stepDetails: finalStepDetails } = allocationResult;
+            
+            // Build results HTML
+            let resultsHTML = `
+                <div class="result-item">
+                    <div class="result-label">Total Sample Size</div>
+                    <div class="result-value">${totalSample}</div>
+                </div>
+                
+                <div class="result-item">
+                    <div class="result-label">Non-Response Rate</div>
+                    <div class="result-value">${nonResponse}%</div>
+                </div>
+            `;
+            
+            if (nonResponse > 0) {
+                resultsHTML += `
+                    <div class="result-item">
+                        <div class="result-label">Adjusted Sample Size</div>
+                        <div class="result-value">${adjustedSample}</div>
+                    </div>
+                `;
+            }
+            
+            resultsHTML += `
+                <div class="result-item">
+                    <div class="result-label">Total Population</div>
+                    <div class="result-value">${totalPopulation}</div>
+                </div>
+                
+                <div class="result-description">
+                    ${finalStepDetails}
+                    
+                    <div class="calculation-steps">
+                        <h4>Final Allocation Summary:</h4>
+                        <ol>
+            `;
+            
+            allocations.forEach(alloc => {
+                resultsHTML += `<li><strong>${alloc.name}:</strong> ${alloc.allocation} participants (${(alloc.proportion * 100).toFixed(1)}% of population)</li>`;
+            });
+            
+            resultsHTML += `
+                        </ol>
+                    </div>
+                    
+                    <strong>Interpretation:</strong>
+                    The proportional allocation ensures each stratum is represented according to its size in the population.${nonResponse > 0 ? ` The adjusted sample size accounts for expected non-response.` : ''}
+                </div>
+            `;
+            
+            showResults('proportional', resultsHTML);
+            showNotification('Proportional Allocation Complete', `Allocated ${adjustedSample} samples across ${strata.length} strata`, 'success');
+        }
+
+        // Reset Proportional Allocation
+        function resetProportional() {
+            document.getElementById('total-sample').value = 100;
+            document.getElementById('non-response').value = 0;
+            strataCounts.proportional = 1;
+            createInitialStratum('proportional');
+            clearResults('proportional');
+            showNotification('Reset Complete', 'Proportional allocation parameters have been reset.', 'info');
+        }
+
+        // Taro Yamane Calculation with detailed steps
+        function calculateYamane() {
+            const population = parseFloat(document.getElementById('population-yamane').value) || 0;
+            const marginError = parseFloat(document.getElementById('margin-error-yamane').value) || 0.05;
+            const nonResponseInput = document.getElementById('non-response-yamane').value.trim();
+            const nonResponse = nonResponseInput === '' ? 0 : parseFloat(nonResponseInput) || 0;
+            const useStrata = document.getElementById('strata-option-yamane').checked;
+            
+            if (population === 0) {
+                showNotification('Input Required', 'Please enter a population size.', 'warning');
+                return;
+            }
+            
+            // Calculate Yamane sample size with detailed steps
+            let stepDetails = `<strong>Step-by-Step Calculation:</strong>`;
+            stepDetails += `\n1. Population size (N): ${population}`;
+            stepDetails += `\n2. Margin of error (e): ${marginError}`;
+            stepDetails += `\n3. Non-response rate: ${nonResponse}%`;
+            stepDetails += `\n\n<strong>Yamane Formula:</strong> n = N / (1 + N × e²)`;
+            stepDetails += `\nCalculation: ${population} / (1 + ${population} × ${marginError}²)`;
+            stepDetails += `\n= ${population} / (1 + ${population} × ${(marginError * marginError).toFixed(4)})`;
+            stepDetails += `\n= ${population} / ${(1 + population * marginError * marginError).toFixed(2)}`;
+            
+            const yamaneSample = Math.ceil(population / (1 + population * marginError * marginError));
+            stepDetails += `\n= ${(population / (1 + population * marginError * marginError)).toFixed(2)}`;
+            stepDetails += `\nRounded up: ${yamaneSample}`;
+            
+            // Adjust for non-response (if non-zero)
+            let adjustedSample = yamaneSample;
+            if (nonResponse > 0) {
+                stepDetails += `\n\n<strong>Non-Response Adjustment:</strong>`;
+                stepDetails += `\nAdjustment factor: 1 / (1 - ${nonResponse}/100) = ${(1/(1-nonResponse/100)).toFixed(4)}`;
+                adjustedSample = Math.ceil(yamaneSample / (1 - nonResponse / 100));
+                stepDetails += `\nAdjusted sample: ${yamaneSample} / (1 - ${nonResponse}/100) = ${adjustedSample}`;
+            } else {
+                stepDetails += `\n\nNon-response rate is 0%, no adjustment needed.`;
+            }
+            
+            // Build results HTML
+            let resultsHTML = `
+                <div class="result-item">
+                    <div class="result-label">Population Size</div>
+                    <div class="result-value">${population.toLocaleString()}</div>
+                </div>
+                
+                <div class="result-item">
+                    <div class="result-label">Margin of Error</div>
+                    <div class="result-value">${(marginError * 100).toFixed(1)}%</div>
+                </div>
+                
+                <div class="result-item">
+                    <div class="result-label">Non-Response Rate</div>
+                    <div class="result-value">${nonResponse}%</div>
+                </div>
+                
+                <div class="result-item">
+                    <div class="result-label">Yamane Sample Size</div>
+                    <div class="result-value">${yamaneSample.toLocaleString()}</div>
+                </div>
+            `;
+            
+            if (nonResponse > 0) {
+                resultsHTML += `
+                    <div class="result-item">
+                        <div class="result-label">Adjusted Sample Size</div>
+                        <div class="result-value">${adjustedSample.toLocaleString()}</div>
+                    </div>
+                `;
+            }
+            
+            // Handle strata allocation if requested
+            if (useStrata) {
+                const { strata, totalPopulation } = getStrataData('yamane');
+                
+                if (strata.length > 0 && totalPopulation > 0) {
+                    if (Math.abs(totalPopulation - population) > 1) {
+                        stepDetails += `\n\n<strong>Note:</strong> Total strata population (${totalPopulation}) differs from input population (${population}). Using strata total for allocation.`;
+                    }
+                    
+                    const allocationResult = allocateSamplesProportionally(strata, totalPopulation, adjustedSample, stepDetails);
+                    const { allocations, stepDetails: finalStepDetails } = allocationResult;
+                    
+                    stepDetails = finalStepDetails;
+                    
+                    resultsHTML += `
+                        <div class="result-description">
+                            ${stepDetails}
+                            
+                            <div class="calculation-steps">
+                                <h4>Final Allocation Summary:</h4>
+                                <ol>
+                    `;
+                    
+                    allocations.forEach(alloc => {
+                        resultsHTML += `<li><strong>${alloc.name}:</strong> ${alloc.allocation} participants (${(alloc.proportion * 100).toFixed(1)}% of population)</li>`;
+                    });
+                    
+                    resultsHTML += `
+                                </ol>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    resultsHTML += `
+                        <div class="result-description">
+                            ${stepDetails}
+                            \n\n<strong>Note:</strong> Strata allocation was requested but no valid strata data was provided.
+                        </div>
+                    `;
+                }
+            } else {
+                resultsHTML += `
+                    <div class="result-description">
+                        ${stepDetails}
+                        \n\n<strong>Interpretation:</strong>
+                        For a population of ${population.toLocaleString()} with ${marginError * 100}% margin of error, you need at least ${adjustedSample.toLocaleString()} participants${nonResponse > 0 ? ` (accounting for ${nonResponse}% non-response rate)` : ''}.
+                    </div>
+                `;
+            }
+            
+            showResults('yamane', resultsHTML);
+            showNotification('Taro Yamane Calculation Complete', `Recommended sample size: ${adjustedSample.toLocaleString()}`, 'success');
+        }
+
+        // Reset Taro Yamane
+        function resetYamane() {
+            document.getElementById('population-yamane').value = 1000;
+            document.getElementById('margin-error-yamane').value = 0.05;
+            document.getElementById('non-response-yamane').value = 0;
+            document.getElementById('strata-option-yamane').checked = false;
+            document.getElementById('strata-section-yamane').style.display = 'none';
+            strataCounts.yamane = 0;
+            const container = document.getElementById('strata-container-yamane');
+            if (container) container.innerHTML = '';
+            clearResults('yamane');
+            showNotification('Reset Complete', 'Taro Yamane parameters have been reset.', 'info');
+        }
+
+        // Enhanced Cochran Formula Calculation with flexible input and detailed steps
+        function calculateCochran() {
+            const proportionInput = document.getElementById('proportion-cochran').value.trim();
+            const zScore = parseFloat(document.getElementById('z-score-cochran').value) || 1.96;
+            const marginError = parseFloat(document.getElementById('margin-cochran').value) || 0.05;
+            const populationInput = document.getElementById('population-cochran').value.trim();
+            const nonResponseInput = document.getElementById('non-response-cochran').value.trim();
+            const nonResponse = nonResponseInput === '' ? 0 : parseFloat(nonResponseInput) || 0;
+            const useStrata = document.getElementById('strata-option-cochran').checked;
+            
+            // Parse proportion input using the enhanced function
+            const p = parseProportion(proportionInput);
+            
+            if (isNaN(p) || p < 0 || p > 1) {
+                showNotification('Invalid Input', 'Please enter a valid proportion (0-1, 0-100, or 0%-100%).', 'warning');
+                return;
+            }
+            
+            // Calculate Cochran sample size with detailed steps
+            let stepDetails = `<strong>Step-by-Step Calculation:</strong>`;
+            stepDetails += `\n1. Proportion (p): "${proportionInput}" → ${p.toFixed(4)} (${(p*100).toFixed(2)}%)`;
+            stepDetails += `\n2. Z-score for confidence level: ${zScore}`;
+            stepDetails += `\n3. Margin of error (e): ${marginError}`;
+            stepDetails += `\n4. Non-response rate: ${nonResponse}%`;
+            
+            stepDetails += `\n\n<strong>Cochran Formula (infinite population):</strong>`;
+            stepDetails += `\nn₀ = Z² × p × (1-p) / e²`;
+            stepDetails += `\n= ${zScore}² × ${p.toFixed(4)} × (1-${p.toFixed(4)}) / ${marginError}²`;
+            stepDetails += `\n= ${(zScore * zScore).toFixed(4)} × ${(p * (1-p)).toFixed(4)} / ${(marginError * marginError).toFixed(4)}`;
+            stepDetails += `\n= ${(zScore * zScore * p * (1-p)).toFixed(4)} / ${(marginError * marginError).toFixed(4)}`;
+            
+            const n0 = (zScore * zScore * p * (1 - p)) / (marginError * marginError);
+            stepDetails += `\n= ${n0.toFixed(2)}`;
+            
+            // Apply finite population correction if applicable
+            let n = n0;
+            let finiteCorrection = false;
+            let population = null;
+            
+            if (populationInput && !isNaN(parseFloat(populationInput))) {
+                population = parseFloat(populationInput);
+                if (population > 0) {
+                    finiteCorrection = true;
+                    stepDetails += `\n\n<strong>Finite Population Correction:</strong>`;
+                    stepDetails += `\nn = n₀ / (1 + (n₀ - 1)/N)`;
+                    stepDetails += `\n= ${n0.toFixed(2)} / (1 + (${n0.toFixed(2)} - 1)/${population})`;
+                    stepDetails += `\n= ${n0.toFixed(2)} / (1 + ${(n0 - 1).toFixed(2)}/${population})`;
+                    stepDetails += `\n= ${n0.toFixed(2)} / ${(1 + (n0 - 1) / population).toFixed(4)}`;
+                    
+                    n = n0 / (1 + (n0 - 1) / population);
+                    stepDetails += `\n= ${n.toFixed(2)}`;
+                }
+            }
+            
+            // Apply non-response adjustment (if non-zero)
+            let adjustedN = Math.ceil(n);
+            if (nonResponse > 0) {
+                stepDetails += `\n\n<strong>Non-Response Adjustment:</strong>`;
+                stepDetails += `\nAdjustment factor: 1 / (1 - ${nonResponse}/100) = ${(1/(1-nonResponse/100)).toFixed(4)}`;
+                adjustedN = Math.ceil(n / (1 - nonResponse / 100));
+                stepDetails += `\nAdjusted sample: ${n.toFixed(2)} / (1 - ${nonResponse}/100) = ${adjustedN}`;
+            } else {
+                stepDetails += `\n\nNon-response rate is 0%, no adjustment needed.`;
+            }
+            
+            const finalSample = Math.ceil(n);
+            const adjustedSample = adjustedN;
+            const confidenceLevel = zScore === 1.645 ? '90%' : zScore === 1.96 ? '95%' : '99%';
+            const displayProportion = formatProportionForDisplay(p);
+            
+            // Build results HTML
+            let resultsHTML = `
+                <div class="result-item">
+                    <div class="result-label">Estimated Proportion</div>
+                    <div class="result-value">${displayProportion}</div>
+                </div>
+                
+                <div class="result-item">
+                    <div class="result-label">Confidence Level</div>
+                    <div class="result-value">${confidenceLevel}</div>
+                </div>
+                
+                <div class="result-item">
+                    <div class="result-label">Margin of Error</div>
+                    <div class="result-value">${(marginError * 100).toFixed(1)}%</div>
+                </div>
+                
+                <div class="result-item">
+                    <div class="result-label">Non-Response Rate</div>
+                    <div class="result-value">${nonResponse}%</div>
+                </div>
+            `;
+            
+            if (finiteCorrection) {
+                resultsHTML += `
+                    <div class="result-item">
+                        <div class="result-label">Population Size</div>
+                        <div class="result-value">${population.toLocaleString()}</div>
+                    </div>
+                `;
+            }
+            
+            resultsHTML += `
+                <div class="result-item">
+                    <div class="result-label">Initial Sample Size</div>
+                    <div class="result-value">${finalSample.toLocaleString()}</div>
+                </div>
+            `;
+            
+            if (nonResponse > 0) {
+                resultsHTML += `
+                    <div class="result-item">
+                        <div class="result-label">Adjusted Sample Size</div>
+                        <div class="result-value">${adjustedSample.toLocaleString()}</div>
+                    </div>
+                `;
+            }
+            
+            // Handle strata allocation if requested
+            if (useStrata) {
+                const { strata, totalPopulation } = getStrataData('cochran');
+                
+                if (strata.length > 0 && totalPopulation > 0) {
+                    if (finiteCorrection && Math.abs(totalPopulation - population) > 1) {
+                        stepDetails += `\n\n<strong>Note:</strong> Total strata population (${totalPopulation}) differs from input population (${population}). Using strata total for allocation.`;
+                    }
+                    
+                    const allocationResult = allocateSamplesProportionally(strata, totalPopulation, adjustedSample, stepDetails);
+                    const { allocations, stepDetails: finalStepDetails } = allocationResult;
+                    
+                    stepDetails = finalStepDetails;
+                    
+                    resultsHTML += `
+                        <div class="result-description">
+                            ${stepDetails}
+                            
+                            <div class="calculation-steps">
+                                <h4>Final Allocation Summary:</h4>
+                                <ol>
+                    `;
+                    
+                    allocations.forEach(alloc => {
+                        resultsHTML += `<li><strong>${alloc.name}:</strong> ${alloc.allocation} participants (${(alloc.proportion * 100).toFixed(1)}% of population)</li>`;
+                    });
+                    
+                    resultsHTML += `
+                                </ol>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    resultsHTML += `
+                        <div class="result-description">
+                            ${stepDetails}
+                            \n\n<strong>Note:</strong> Strata allocation was requested but no valid strata data was provided.
+                        </div>
+                    `;
+                }
+            } else {
+                resultsHTML += `
+                    <div class="result-description">
+                        ${stepDetails}
+                        \n\n<strong>Interpretation:</strong>
+                        To estimate a proportion of ${displayProportion} with ${confidenceLevel} confidence and ${marginError * 100}% margin of error, you need ${adjustedSample.toLocaleString()} participants${finiteCorrection ? ` (adjusted for finite population of ${population.toLocaleString()})` : ''}${nonResponse > 0 ? ` (accounting for ${nonResponse}% non-response rate)` : ''}.
+                    </div>
+                `;
+            }
+            
+            showResults('cochran', resultsHTML);
+            showNotification('Cochran Calculation Complete', `Recommended sample size: ${adjustedSample.toLocaleString()}`, 'success');
+        }
+
+        // Reset Cochran Formula
+        function resetCochran() {
+            document.getElementById('proportion-cochran').value = "50%";
+            document.getElementById('z-score-cochran').value = "1.96";
+            document.getElementById('margin-cochran').value = 0.05;
+            document.getElementById('population-cochran').value = "";
+            document.getElementById('non-response-cochran').value = 0;
+            document.getElementById('strata-option-cochran').checked = false;
+            document.getElementById('strata-section-cochran').style.display = 'none';
+            strataCounts.cochran = 0;
+            const container = document.getElementById('strata-container-cochran');
+            if (container) container.innerHTML = '';
+            clearResults('cochran');
+            showNotification('Reset Complete', 'Cochran formula parameters have been reset.', 'info');
+        }
+
+        // Update other formula inputs and display based on selected formula type
+        function updateOtherFormulaInputs() {
+            const formulaType = document.getElementById('formula-type').value;
+            const container = document.getElementById('other-formula-inputs');
+            const formulaTitle = document.getElementById('other-formula-title');
+            const formulaCode = document.getElementById('other-formula-code');
+            const formulaDesc = document.getElementById('other-formula-description');
+            
+            let html = '';
+            let title = '';
+            let code = '';
+            let description = '';
+            
+            // Set formula-specific content
+            switch(formulaType) {
+                case "single-proportion":
+                    title = "Single Population Proportion";
+                    code = "n = Z² × p × (1-p) / e²";
+                    description = "For estimating a single proportion with specified precision. This formula calculates the sample size needed to estimate a population proportion with a given margin of error and confidence level.";
+                    html = `
+                        <div class="input-group">
+                            <label for="prop-value-other">
+                                <i class="fas fa-chart-bar"></i>
+                                Estimated Proportion (p)
+                            </label>
+                            <input type="text" id="prop-value-other" value="50%" placeholder="Enter as 0.5, 50, or 50%">
+                            <div class="format-hint">Accepts: 0.50 (decimal), 50 (percentage), or 50% (with symbol)</div>
+                        </div>
+                        
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="prop-confidence-other">
+                                    <i class="fas fa-chart-line"></i>
+                                    Confidence Level
+                                </label>
+                                <select id="prop-confidence-other">
+                                    <option value="1.645">90% Confidence (Z = 1.645)</option>
+                                    <option value="1.96" selected>95% Confidence (Z = 1.96)</option>
+                                    <option value="2.576">99% Confidence (Z = 2.576)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="prop-margin-other">
+                                    <i class="fas fa-bullseye"></i>
+                                    Margin of Error (e)
+                                </label>
+                                <input type="number" id="prop-margin-other" value="0.05" min="0.01" max="0.5" step="0.01">
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case "mean-known":
+                    title = "Mean Estimation (Known Variance)";
+                    code = "n = (Z² × σ²) / e²";
+                    description = "For estimating population mean when variance is known. This formula determines the sample size needed to estimate a population mean within a specified margin of error when the population standard deviation is known.";
+                    html = `
+                        <div class="input-group">
+                            <label for="mean-sd-other">
+                                <i class="fas fa-ruler"></i>
+                                Standard Deviation (σ)
+                            </label>
+                            <input type="number" id="mean-sd-other" value="1" min="0.1" step="0.1">
+                        </div>
+                        
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="mean-confidence-other">
+                                    <i class="fas fa-chart-line"></i>
+                                    Confidence Level
+                                </label>
+                                <select id="mean-confidence-other">
+                                    <option value="1.645">90% Confidence (Z = 1.645)</option>
+                                    <option value="1.96" selected>95% Confidence (Z = 1.96)</option>
+                                    <option value="2.576">99% Confidence (Z = 2.576)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="mean-margin-other">
+                                    <i class="fas fa-exchange-alt"></i>
+                                    Margin of Error (e)
+                                </label>
+                                <input type="number" id="mean-margin-other" value="0.5" min="0.1" step="0.1">
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case "mean-unknown":
+                    title = "Mean Estimation (Unknown Variance)";
+                    code = "n = (t² × s²) / e²";
+                    description = "For estimating population mean when variance is unknown. This formula uses the t-distribution and requires an estimate of standard deviation and degrees of freedom.";
+                    html = `
+                        <div class="input-group">
+                            <label for="mean-sd-estimate-other">
+                                <i class="fas fa-ruler"></i>
+                                Estimated Standard Deviation (s)
+                            </label>
+                            <input type="number" id="mean-sd-estimate-other" value="1" min="0.1" step="0.1">
+                        </div>
+                        
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="mean-df-other">
+                                    <i class="fas fa-superscript"></i>
+                                    Degrees of Freedom
+                                </label>
+                                <input type="number" id="mean-df-other" value="30" min="1" step="1">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="mean-margin-unknown-other">
+                                    <i class="fas fa-exchange-alt"></i>
+                                    Margin of Error (e)
+                                </label>
+                                <input type="number" id="mean-margin-unknown-other" value="0.5" min="0.1" step="0.1">
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="mean-confidence-unknown-other">
+                                <i class="fas fa-chart-line"></i>
+                                Confidence Level
+                            </label>
+                            <select id="mean-confidence-unknown-other">
+                                <option value="0.10">90% Confidence</option>
+                                <option value="0.05" selected>95% Confidence</option>
+                                <option value="0.01">99% Confidence</option>
+                            </select>
+                        </div>
+                    `;
+                    break;
+                case "proportion-diff":
+                    title = "Proportion Difference";
+                    code = "n = [Z√(2p̄(1-p̄)) + Zβ√(p₁(1-p₁)+p₂(1-p₂))]² / (p₁-p₂)²";
+                    description = "For comparing proportions between two groups. This formula calculates the sample size needed to detect a specified difference between two proportions with given statistical power.";
+                    html = `
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="prop1-other">
+                                    <i class="fas fa-percentage"></i>
+                                    Proportion in Group 1 (p₁)
+                                </label>
+                                <input type="text" id="prop1-other" value="50%" placeholder="Enter as 0.5, 50, or 50%">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="prop2-other">
+                                    <i class="fas fa-percentage"></i>
+                                    Proportion in Group 2 (p₂)
+                                </label>
+                                <input type="text" id="prop2-other" value="30%" placeholder="Enter as 0.3, 30, or 30%">
+                            </div>
+                        </div>
+                        
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="alpha-other">
+                                    <i class="fas fa-signal"></i>
+                                    Alpha (α)
+                                </label>
+                                <input type="number" id="alpha-other" value="0.05" min="0.001" max="0.2" step="0.01">
+                            </div>
+                            <div class="input-group">
+                                <label for="power-other">
+                                    <i class="fas fa-bolt"></i>
+                                    Power (1-β)
+                                </label>
+                                <input type="number" id="power-other" value="0.8" min="0.5" max="0.99" step="0.01">
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case "correlation":
+                    title = "Correlation Coefficient";
+                    code = "n = [(Zα + Zβ) / (0.5 × ln((1+r)/(1-r)))]² + 3";
+                    description = "For correlation studies to detect relationships. This formula determines the sample size needed to detect a correlation of specified magnitude with given statistical power.";
+                    html = `
+                        <div class="input-group">
+                            <label for="correlation-r-other">
+                                <i class="fas fa-project-diagram"></i>
+                                Expected Correlation (r)
+                            </label>
+                            <input type="number" id="correlation-r-other" value="0.3" min="-0.99" max="0.99" step="0.01">
+                        </div>
+                        
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="alpha-correlation-other">
+                                    <i class="fas fa-signal"></i>
+                                    Alpha (α)
+                                </label>
+                                <input type="number" id="alpha-correlation-other" value="0.05" min="0.001" max="0.2" step="0.01">
+                            </div>
+                            <div class="input-group">
+                                <label for="power-correlation-other">
+                                    <i class="fas fa-bolt"></i>
+                                    Power (1-β)
+                                </label>
+                                <input type="number" id="power-correlation-other" value="0.8" min="0.5" max="0.99" step="0.01">
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case "regression":
+                    title = "Regression Analysis";
+                    code = "n = k / f² + k + 10";
+                    description = "For regression analysis with multiple predictors. This formula estimates the sample size needed for multiple regression analysis based on the number of predictors and expected effect size.";
+                    html = `
+                        <div class="input-group">
+                            <label for="predictors-other">
+                                <i class="fas fa-cubes"></i>
+                                Number of Predictors (k)
+                            </label>
+                            <input type="number" id="predictors-other" value="2" min="1" step="1">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="r-squared-other">
+                                <i class="fas fa-chart-area"></i>
+                                Expected R²
+                            </label>
+                            <input type="number" id="r-squared-other" value="0.25" min="0.01" max="0.99" step="0.01">
+                        </div>
+                        
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="alpha-regression-other">
+                                    <i class="fas fa-signal"></i>
+                                    Alpha (α)
+                                </label>
+                                <input type="number" id="alpha-regression-other" value="0.05" min="0.001" max="0.2" step="0.01">
+                            </div>
+                            <div class="input-group">
+                                <label for="power-regression-other">
+                                    <i class="fas fa-bolt"></i>
+                                    Power (1-β)
+                                </label>
+                                <input type="number" id="power-regression-other" value="0.8" min="0.5" max="0.99" step="0.01">
+                            </div>
+                        </div>
+                    `;
+                    break;
+            }
+            
+            // Update the display
+            formulaTitle.textContent = title;
+            formulaCode.textContent = code;
+            formulaDesc.textContent = description;
+            container.innerHTML = html;
+            
+            // Re-setup non-response inputs
+            setTimeout(() => {
+                setupNonResponseInputs();
+            }, 100);
+        }
+
+        // Other Formulas Calculation with enhanced proportion parsing and detailed steps
+        function calculateOther() {
+            const formulaType = document.getElementById('formula-type').value;
+            const nonResponseInput = document.getElementById('non-response-other').value.trim();
+            const nonResponse = nonResponseInput === '' ? 0 : parseFloat(nonResponseInput) || 0;
+            const useStrata = document.getElementById('strata-option-other').checked;
+            
+            let sampleSize = 0;
+            let formulaName = "";
+            let formulaDesc = "";
+            let stepDetails = `<strong>Step-by-Step Calculation:</strong>`;
+            
+            // Calculations based on formula type
+            switch(formulaType) {
+                case "single-proportion":
+                    const pInput = document.getElementById('prop-value-other')?.value || "50%";
+                    const p = parseProportion(pInput);
+                    const margin = parseFloat(document.getElementById('prop-margin-other')?.value) || 0.05;
+                    const zScore = parseFloat(document.getElementById('prop-confidence-other')?.value) || 1.96;
+                    
+                    formulaName = "Single Population Proportion";
+                    formulaDesc = "For estimating a single proportion with specified precision.";
+                    
+                    stepDetails += `\n1. Proportion (p): "${pInput}" → ${p.toFixed(4)}`;
+                    stepDetails += `\n2. Z-score: ${zScore}`;
+                    stepDetails += `\n3. Margin of error: ${margin}`;
+                    stepDetails += `\n4. Non-response rate: ${nonResponse}%`;
+                    stepDetails += `\n\n<strong>Formula:</strong> n = Z² × p × (1-p) / e²`;
+                    stepDetails += `\nCalculation: ${zScore}² × ${p.toFixed(4)} × (1-${p.toFixed(4)}) / ${margin}²`;
+                    stepDetails += `\n= ${(zScore * zScore).toFixed(4)} × ${(p * (1-p)).toFixed(4)} / ${(margin * margin).toFixed(4)}`;
+                    
+                    const n0 = (zScore * zScore * p * (1-p)) / (margin * margin);
+                    stepDetails += `\n= ${(zScore * zScore * p * (1-p)).toFixed(4)} / ${(margin * margin).toFixed(4)}`;
+                    stepDetails += `\n= ${n0.toFixed(2)}`;
+                    
+                    sampleSize = Math.ceil(n0);
+                    break;
+                    
+                case "mean-known":
+                    const sd = parseFloat(document.getElementById('mean-sd-other')?.value) || 1;
+                    const diff = parseFloat(document.getElementById('mean-margin-other')?.value) || 0.5;
+                    const zAlpha = parseFloat(document.getElementById('mean-confidence-other')?.value) || 1.96;
+                    
+                    formulaName = "Mean Estimation (Known Variance)";
+                    formulaDesc = "For estimating population mean when variance is known.";
+                    
+                    stepDetails += `\n1. Standard deviation (σ): ${sd}`;
+                    stepDetails += `\n2. Z-score: ${zAlpha}`;
+                    stepDetails += `\n3. Margin of error: ${diff}`;
+                    stepDetails += `\n4. Non-response rate: ${nonResponse}%`;
+                    stepDetails += `\n\n<strong>Formula:</strong> n = (Z² × σ²) / e²`;
+                    stepDetails += `\nCalculation: ${zAlpha}² × ${sd}² / ${diff}²`;
+                    stepDetails += `\n= ${(zAlpha * zAlpha).toFixed(4)} × ${(sd * sd).toFixed(4)} / ${(diff * diff).toFixed(4)}`;
+                    
+                    const n1 = (zAlpha * zAlpha * sd * sd) / (diff * diff);
+                    stepDetails += `\n= ${(zAlpha * zAlpha * sd * sd).toFixed(4)} / ${(diff * diff).toFixed(4)}`;
+                    stepDetails += `\n= ${n1.toFixed(2)}`;
+                    
+                    sampleSize = Math.ceil(n1);
+                    break;
+                    
+                case "mean-unknown":
+                    const s = parseFloat(document.getElementById('mean-sd-estimate-other')?.value) || 1;
+                    const df = parseFloat(document.getElementById('mean-df-other')?.value) || 30;
+                    const marginUnknown = parseFloat(document.getElementById('mean-margin-unknown-other')?.value) || 0.5;
+                    const alphaLevel = parseFloat(document.getElementById('mean-confidence-unknown-other')?.value) || 0.05;
+                    
+                    // Get t-value based on alpha and df
+                    let tValue;
+                    if (alphaLevel === 0.10) tValue = 1.697; // t for 90% CI with df=30
+                    else if (alphaLevel === 0.01) tValue = 2.750; // t for 99% CI with df=30
+                    else tValue = 2.042; // t for 95% CI with df=30
+                    
+                    formulaName = "Mean Estimation (Unknown Variance)";
+                    formulaDesc = "For estimating population mean when variance is unknown (uses t-distribution).";
+                    
+                    stepDetails += `\n1. Estimated standard deviation (s): ${s}`;
+                    stepDetails += `\n2. Degrees of freedom: ${df}`;
+                    stepDetails += `\n3. t-value for ${alphaLevel===0.10?'90%':alphaLevel===0.05?'95%':'99%'} CI: ${tValue.toFixed(3)}`;
+                    stepDetails += `\n4. Margin of error: ${marginUnknown}`;
+                    stepDetails += `\n5. Non-response rate: ${nonResponse}%`;
+                    stepDetails += `\n\n<strong>Formula:</strong> n = (t² × s²) / e²`;
+                    stepDetails += `\nCalculation: ${tValue.toFixed(3)}² × ${s}² / ${marginUnknown}²`;
+                    stepDetails += `\n= ${(tValue * tValue).toFixed(4)} × ${(s * s).toFixed(4)} / ${(marginUnknown * marginUnknown).toFixed(4)}`;
+                    
+                    const n2 = (tValue * tValue * s * s) / (marginUnknown * marginUnknown);
+                    stepDetails += `\n= ${(tValue * tValue * s * s).toFixed(4)} / ${(marginUnknown * marginUnknown).toFixed(4)}`;
+                    stepDetails += `\n= ${n2.toFixed(2)}`;
+                    
+                    sampleSize = Math.ceil(n2);
+                    break;
+                    
+                case "proportion-diff":
+                    const p1Input = document.getElementById('prop1-other')?.value || "50%";
+                    const p2Input = document.getElementById('prop2-other')?.value || "30%";
+                    const p1 = parseProportion(p1Input);
+                    const p2 = parseProportion(p2Input);
+                    const alpha = parseFloat(document.getElementById('alpha-other')?.value) || 0.05;
+                    const power = parseFloat(document.getElementById('power-other')?.value) || 0.8;
+                    
+                    formulaName = "Proportion Difference";
+                    formulaDesc = "For comparing proportions between two groups.";
+                    
+                    stepDetails += `\n1. Proportion in group 1: "${p1Input}" → ${p1.toFixed(4)}`;
+                    stepDetails += `\n2. Proportion in group 2: "${p2Input}" → ${p2.toFixed(4)}`;
+                    stepDetails += `\n3. Alpha (α): ${alpha}`;
+                    stepDetails += `\n4. Power (1-β): ${power}`;
+                    stepDetails += `\n5. Non-response rate: ${nonResponse}%`;
+                    
+                    // Simplified calculation for demonstration
+                    const zAlpha2 = 1.96; // For alpha=0.05
+                    const zBeta = 0.84; // For power=0.8
+                    const pBar = (p1 + p2) / 2;
+                    const effectSize = Math.abs(p1 - p2);
+                    
+                    stepDetails += `\n\n<strong>Simplified Calculation:</strong>`;
+                    stepDetails += `\nAverage proportion (p̄): (${p1.toFixed(4)} + ${p2.toFixed(4)}) / 2 = ${pBar.toFixed(4)}`;
+                    stepDetails += `\nEffect size: |${p1.toFixed(4)} - ${p2.toFixed(4)}| = ${effectSize.toFixed(4)}`;
+                    
+                    const n3 = Math.ceil((Math.pow((zAlpha2 * Math.sqrt(2 * pBar * (1-pBar)) + zBeta * Math.sqrt(p1*(1-p1) + p2*(1-p2))), 2)) / Math.pow(effectSize, 2));
+                    stepDetails += `\n\nSample size per group: ${n3}`;
+                    
+                    sampleSize = n3 * 2; // Total for both groups
+                    break;
+                    
+                case "correlation":
+                    const r = parseFloat(document.getElementById('correlation-r-other')?.value) || 0.3;
+                    const alpha2 = parseFloat(document.getElementById('alpha-correlation-other')?.value) || 0.05;
+                    const power2 = parseFloat(document.getElementById('power-correlation-other')?.value) || 0.8;
+                    
+                    formulaName = "Correlation Coefficient";
+                    formulaDesc = "For correlation studies to detect relationships.";
+                    
+                    stepDetails += `\n1. Expected correlation (r): ${r}`;
+                    stepDetails += `\n2. Alpha (α): ${alpha2}`;
+                    stepDetails += `\n3. Power (1-β): ${power2}`;
+                    stepDetails += `\n4. Non-response rate: ${nonResponse}%`;
+                    
+                    // Simplified calculation
+                    const zAlpha3 = 1.96; // For alpha=0.05
+                    const zBeta3 = 0.84; // For power=0.8
+                    
+                    stepDetails += `\n\n<strong>Simplified Calculation:</strong>`;
+                    stepDetails += `\nFisher's z transformation: 0.5 × ln((1+${r})/(1-${r}))`;
+                    const fisherZ = 0.5 * Math.log((1+r)/(1-r));
+                    stepDetails += `\n= 0.5 × ln(${1+r}/${1-r}) = ${fisherZ.toFixed(4)}`;
+                    
+                    const n4 = Math.ceil(Math.pow((zAlpha3 + zBeta3) / fisherZ, 2) + 3);
+                    stepDetails += `\n\nSample size: ((${zAlpha3} + ${zBeta3}) / ${fisherZ.toFixed(4)})² + 3 = ${n4}`;
+                    
+                    sampleSize = n4;
+                    break;
+                    
+                case "regression":
+                    const predictors = parseInt(document.getElementById('predictors-other')?.value) || 2;
+                    const r2 = parseFloat(document.getElementById('r-squared-other')?.value) || 0.25;
+                    const alpha3 = parseFloat(document.getElementById('alpha-regression-other')?.value) || 0.05;
+                    const power3 = parseFloat(document.getElementById('power-regression-other')?.value) || 0.8;
+                    
+                    formulaName = "Regression Analysis";
+                    formulaDesc = "For regression analysis with multiple predictors.";
+                    
+                    stepDetails += `\n1. Number of predictors (k): ${predictors}`;
+                    stepDetails += `\n2. Expected R²: ${r2}`;
+                    stepDetails += `\n3. Alpha (α): ${alpha3}`;
+                    stepDetails += `\n4. Power (1-β): ${power3}`;
+                    stepDetails += `\n5. Non-response rate: ${nonResponse}%`;
+                    
+                    const f2 = r2 / (1 - r2);
+                    stepDetails += `\n\nEffect size (f²): ${r2} / (1 - ${r2}) = ${f2.toFixed(4)}`;
+                    
+                    const n5 = Math.ceil(predictors / f2 + predictors + 10);
+                    stepDetails += `\n\nSample size: ${predictors} / ${f2.toFixed(4)} + ${predictors} + 10 = ${n5}`;
+                    
+                    sampleSize = n5;
+                    break;
+            }
+            
+            // Apply non-response adjustment (if non-zero)
+            let adjustedSample = sampleSize;
+            if (nonResponse > 0) {
+                stepDetails += `\n\n<strong>Non-Response Adjustment (${nonResponse}%):</strong>`;
+                stepDetails += `\nAdjustment factor: 1 / (1 - ${nonResponse}/100) = ${(1/(1-nonResponse/100)).toFixed(4)}`;
+                adjustedSample = Math.ceil(sampleSize / (1 - nonResponse / 100));
+                stepDetails += `\nAdjusted sample: ${sampleSize} / (1 - ${nonResponse}/100) = ${adjustedSample}`;
+            } else {
+                stepDetails += `\n\nNon-response rate is 0%, no adjustment needed.`;
+            }
+            
+            // Build results HTML
+            let resultsHTML = `
+                <div class="result-item">
+                    <div class="result-label">Formula Type</div>
+                    <div class="result-value">${formulaName}</div>
+                </div>
+                
+                <div class="result-item">
+                    <div class="result-label">Non-Response Rate</div>
+                    <div class="result-value">${nonResponse}%</div>
+                </div>
+                
+                <div class="result-item">
+                    <div class="result-label">Initial Sample Size</div>
+                    <div class="result-value">${sampleSize.toLocaleString()}</div>
+                </div>
+            `;
+            
+            if (nonResponse > 0) {
+                resultsHTML += `
+                    <div class="result-item">
+                        <div class="result-label">Adjusted Sample Size</div>
+                        <div class="result-value">${adjustedSample.toLocaleString()}</div>
+                    </div>
+                `;
+            }
+            
+            // Handle strata allocation if requested
+            if (useStrata) {
+                const { strata, totalPopulation } = getStrataData('other');
+                
+                if (strata.length > 0 && totalPopulation > 0) {
+                    const allocationResult = allocateSamplesProportionally(strata, totalPopulation, adjustedSample, stepDetails);
+                    const { allocations, stepDetails: finalStepDetails } = allocationResult;
+                    
+                    stepDetails = finalStepDetails;
+                    
+                    resultsHTML += `
+                        <div class="result-description">
+                            ${stepDetails}
+                            
+                            <div class="calculation-steps">
+                                <h4>Final Allocation Summary:</h4>
+                                <ol>
+                    `;
+                    
+                    allocations.forEach(alloc => {
+                        resultsHTML += `<li><strong>${alloc.name}:</strong> ${alloc.allocation} participants (${(alloc.proportion * 100).toFixed(1)}% of population)</li>`;
+                    });
+                    
+                    resultsHTML += `
+                                </ol>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    resultsHTML += `
+                        <div class="result-description">
+                            ${stepDetails}
+                            \n\n<strong>Note:</strong> Strata allocation was requested but no valid strata data was provided.
+                        </div>
+                    `;
+                }
+            } else {
+                resultsHTML += `
+                    <div class="result-description">
+                        ${stepDetails}
+                        
+                        <div class="calculation-steps">
+                            <h4>Formula Description:</h4>
+                            <p>${formulaDesc}</p>
+                            
+                            <h4>Recommendation:</h4>
+                            <p>A sample size of approximately <strong>${adjustedSample.toLocaleString()}</strong> is recommended for this study design${nonResponse > 0 ? ` (adjusted for ${nonResponse}% non-response rate)` : ''}.</p>
+                            
+                            <h4>Note:</h4>
+                            <p>This is an approximate calculation. For precise sample size determination, consider using specialized statistical software or consulting a statistician.</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            showResults('other', resultsHTML);
+            showNotification('Calculation Complete', `${formulaName}: ${adjustedSample.toLocaleString()} samples recommended`, 'success');
+        }
+
+        // Reset Other Formulas
+        function resetOther() {
+            // Reset the selected formula type to default
+            document.getElementById('formula-type').value = "single-proportion";
+            
+            // Reset non-response
+            document.getElementById('non-response-other').value = 0;
+            
+            // Reset strata option
+            document.getElementById('strata-option-other').checked = false;
+            document.getElementById('strata-section-other').style.display = 'none';
+            
+            // Reset strata data
+            strataCounts.other = 0;
+            const container = document.getElementById('strata-container-other');
+            if (container) container.innerHTML = '';
+            
+            // Update inputs to default state
+            updateOtherFormulaInputs();
+            
+            // Clear results
+            clearResults('other');
+            
+            showNotification('Reset Complete', 'Statistical formula parameters have been reset.', 'info');
+        }
+    </script>
+</body>
+</html>
