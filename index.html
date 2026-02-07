@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StatCalc Pro | Statistical Calculator Suite</title>
+    <title>CalcuStats Lite | Statistical Calculator Suite</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
     <style>
@@ -21,21 +21,7 @@
             --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             --radius: 12px;
             
-            /* Light theme colors (default) */
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-color: #2c3e50;
-            --text-light: #7b8793;
-            --header-bg: linear-gradient(135deg, #1a237e 0%, #283593 100%);
-            --tabs-bg: #2c3e50;
-            --input-bg: #ffffff;
-            --input-border: #e0e6ed;
-            --footer-bg: #2c3e50;
-            --footer-color: #ecf0f1;
-        }
-
-        /* Dark theme colors */
-        .dark-theme {
+            /* Dark theme colors (default) */
             --bg-color: #1a1a2e;
             --card-bg: #2d3047;
             --text-color: #ffffff;
@@ -52,10 +38,68 @@
             --border: #4a4d6a;
         }
 
+        /* Light theme colors */
+        .light-theme {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --text-light: #7b8793;
+            --header-bg: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            --tabs-bg: #2c3e50;
+            --input-bg: #ffffff;
+            --input-border: #e0e6ed;
+            --footer-bg: #2c3e50;
+            --footer-color: #ecf0f1;
+            --gray: #7b8793;
+            --light: #ecf0f1;
+            --lighter: #ffffff;
+            --border: #e0e6ed;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        /* Back to Top Button */
+        #backToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        #backToTop:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.6);
+            background: linear-gradient(135deg, var(--accent) 0%, var(--secondary) 100%);
+        }
+
+        #backToTop.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        #backToTop:active {
+            transform: scale(0.95);
         }
 
         /* Loading Animation */
@@ -466,6 +510,43 @@
             margin: 0 auto;
         }
 
+        .lite-version-notice {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(41, 128, 185, 0.1) 100%);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin: 25px 0;
+            border-left: 4px solid var(--secondary);
+            text-align: center;
+        }
+
+        .lite-version-notice h3 {
+            color: var(--text-color);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .lite-version-notice p {
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        .original-app-link {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .original-app-link:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
+        }
+
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -512,7 +593,7 @@
             font-size: 0.95rem;
         }
 
-        /* Calculator Layout - Two Columns with Independent Scrolling */
+        /* Calculator Layout - Two Columns with Independent Scrolling (Desktop) */
         .calculator-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -523,7 +604,7 @@
         /* Independent scrolling containers */
         .scroll-container {
             overflow-y: auto;
-            height: 100%;
+            height: 600px;
             padding-right: 15px;
         }
 
@@ -1116,6 +1197,16 @@
             .mobile-menu-content {
                 display: none !important;
             }
+            
+            /* Desktop layout: Two columns with scrolling */
+            .calculator-layout {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .scroll-container {
+                height: 600px;
+                overflow-y: auto;
+            }
         }
 
         /* Tablet and below: 1199px and below */
@@ -1132,14 +1223,26 @@
                 padding: 0 20px;
             }
             
+            /* Mobile/Tablet layout: Single column with minimal spacing */
             .calculator-layout {
                 grid-template-columns: 1fr;
-                gap: 25px;
+                gap: 20px;
+                min-height: auto;
             }
             
             .scroll-container {
-                max-height: 50vh;
-                overflow-y: auto;
+                height: auto;
+                overflow-y: visible;
+                padding-right: 0;
+                max-height: none;
+            }
+            
+            .input-panel, .results-panel {
+                margin-bottom: 0;
+            }
+            
+            .results-panel {
+                margin-top: 20px;
             }
             
             /* Hide desktop tabs, show hamburger menu */
@@ -1208,11 +1311,16 @@
                 font-size: 1.5rem;
             }
             
+            /* Mobile theme toggle - show only icon */
             .theme-toggle {
+                padding: 8px 12px;
                 margin-top: 8px;
                 order: 3;
-                width: 100%;
-                justify-content: center;
+                width: auto;
+            }
+            
+            .theme-text {
+                display: none;
             }
             
             .mobile-menu-btn {
@@ -1237,6 +1345,9 @@
             
             .input-panel, .results-panel {
                 padding: 20px;
+                margin-left: 0;
+                margin-right: 0;
+                width: 100%;
             }
             
             .panel-header, .results-header {
@@ -1282,6 +1393,9 @@
             
             .feature-card {
                 padding: 20px;
+                margin-left: 0;
+                margin-right: 0;
+                width: 100%;
             }
             
             .feature-icon {
@@ -1292,6 +1406,9 @@
             
             .home-content {
                 padding: 25px 20px;
+                margin-left: 0;
+                margin-right: 0;
+                width: 100%;
             }
             
             .home-header h2 {
@@ -1319,6 +1436,29 @@
             .footer-content {
                 padding: 0 15px;
             }
+            
+            /* Fix for mobile scrolling issues - reduce card spacing */
+            .tab-content:not(#home-tab) {
+                padding: 15px 0;
+            }
+            
+            .calculator-layout {
+                gap: 15px;
+            }
+            
+            .input-panel, .results-panel {
+                margin-bottom: 0;
+                padding: 20px 15px;
+            }
+            
+            .results-panel {
+                margin-top: 15px;
+            }
+            
+            .scroll-container {
+                max-height: none;
+                overflow: visible;
+            }
         }
 
         /* Small Mobile: Below 480px */
@@ -1328,8 +1468,8 @@
             }
             
             .theme-toggle {
-                padding: 6px 12px;
-                font-size: 0.85rem;
+                padding: 8px;
+                width: auto;
             }
             
             .input-panel, .results-panel {
@@ -1353,6 +1493,34 @@
                 padding: 16px 15px;
                 font-size: 0.95rem;
             }
+            
+            /* Further reduce spacing for very small screens */
+            .home-content {
+                padding: 20px 15px;
+            }
+            
+            .feature-card {
+                padding: 15px;
+            }
+            
+            .panel-header, .results-header {
+                margin-bottom: 15px;
+                padding-bottom: 15px;
+            }
+            
+            .action-buttons {
+                margin-top: 20px;
+                padding-top: 20px;
+            }
+            
+            /* Back to top button for mobile */
+            #backToTop {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
         }
 
         /* Extra Small Mobile: Below 360px */
@@ -1370,18 +1538,31 @@
                 font-size: 20px;
             }
             
-            .theme-text {
-                display: none;
-            }
-            
             .theme-toggle {
-                width: auto;
-                padding: 8px;
+                padding: 6px;
             }
             
             .mobile-menu-btn {
                 width: 40px;
                 height: 40px;
+            }
+            
+            /* Minimal spacing for tiny screens */
+            .input-panel, .results-panel {
+                padding: 12px;
+            }
+            
+            .home-content {
+                padding: 15px 12px;
+            }
+            
+            /* Back to top button for extra small screens */
+            #backToTop {
+                bottom: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
             }
         }
 
@@ -1391,17 +1572,13 @@
                 min-height: auto;
             }
             
-            .scroll-container {
-                max-height: 60vh;
-            }
-            
             .mobile-menu-content {
                 width: 250px;
             }
         }
     </style>
 </head>
-<body class="light-theme">
+<body class="dark-theme">
     <!-- Loading Animation -->
     <div id="loader">
         <div class="loader-content">
@@ -1410,8 +1587,8 @@
                 <div class="atom-circle"></div>
                 <div class="atom-circle"></div>
             </div>
-            <h2>StatCalc Pro</h2>
-            <p>Advanced statistical calculators for research and analysis...</p>
+            <h2>CalcuStats Lite</h2>
+            <p>Lite version of CalcuStats - Statistical calculators for research and analysis...</p>
         </div>
     </div>
 
@@ -1423,17 +1600,17 @@
                     <i class="fas fa-calculator logo-icon"></i>
                 </div>
                 <div class="header-title">
-                    <h1>StatCalc Pro</h1>
-                    <p>Advanced statistical calculators for research and analysis</p>
+                    <h1>CalcuStats Lite</h1>
+                    <p>Lite version of CalcuStats - Statistical calculators for research and analysis</p>
                 </div>
             </div>
             
             <!-- Theme Toggle -->
             <div class="theme-toggle" id="themeToggle">
                 <div class="theme-icon" id="themeIcon">
-                    <i class="fas fa-moon"></i>
+                    <i class="fas fa-sun"></i>
                 </div>
-                <div class="theme-text" id="themeText">Dark Theme</div>
+                <div class="theme-text" id="themeText">Light Theme</div>
             </div>
             
             <!-- Mobile Menu Button (Hamburger) -->
@@ -1475,7 +1652,7 @@
     <!-- Mobile Menu Content -->
     <div class="mobile-menu-content" id="mobileMenuContent">
         <div class="mobile-menu-header">
-            <div class="mobile-menu-title">StatCalc Menu</div>
+            <div class="mobile-menu-title">CalcuStats Lite Menu</div>
             <button class="mobile-menu-close" id="mobileMenuClose">
                 <i class="fas fa-times"></i>
             </button>
@@ -1520,7 +1697,7 @@
         <div class="tab-content active" id="home-tab">
             <div class="home-content">
                 <div class="home-header">
-                    <h2>Welcome to StatCalc Pro</h2>
+                    <h2>Welcome to CalcuStats Lite</h2>
                     <p>Your comprehensive statistical calculator suite for research, academic, and professional analysis</p>
                 </div>
 
@@ -2066,16 +2243,16 @@
         </div>
     </div>
 
+    <!-- Back to Top Button -->
+    <div id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
     <!-- Site Footer (only shows on Home tab) -->
     <footer class="site-footer" id="siteFooter">
         <div class="footer-content">
-            <div class="footer-attribution">
-                Created by <a href="https://www.mudasiribrahim.com" target="_blank" rel="noopener noreferrer">
-                    Mudasir Mohammed Ibrahim
-                </a>
-            </div>
             <div class="footer-copyright">
-                Copyright © <span id="copyrightYear"></span> StatCalc Pro. All calculations are estimates for planning purposes.
+                Copyright © <span id="copyrightYear"></span> CalcuStats Lite. This is a lite version of <a href="https://mudassiribrahim2025.shinyapps.io/CalcuStats/" target="_blank" rel="noopener noreferrer" style="color: var(--secondary);">CalcuStats</a>. Developed by <a href="https://www.mudasiribrahim.com/" target="_blank" rel="noopener noreferrer" style="color: var(--secondary);">Mudasir Mohammed Ibrahim</a>
             </div>
         </div>
     </footer>
@@ -2083,7 +2260,7 @@
     <script>
         // Global variables
         let currentTab = 'home';
-        let isDarkTheme = false;
+        let isDarkTheme = true; // Default to dark theme
         let isMobileView = false;
         let strataCounts = {
             proportional: 1,
@@ -2098,6 +2275,28 @@
                 document.getElementById('loader').classList.add('hidden');
             }, 1500);
         });
+
+        // Back to Top functionality
+        function initBackToTop() {
+            const backToTopBtn = document.getElementById('backToTop');
+            
+            // Show/hide button based on scroll position
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+            
+            // Scroll to top when button is clicked
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
 
         // Theme Toggle Functionality
         function toggleTheme() {
@@ -2120,7 +2319,7 @@
             }
             
             // Save theme preference to localStorage
-            localStorage.setItem('statcalc-theme', isDarkTheme ? 'dark' : 'light');
+            localStorage.setItem('calcustats-theme', isDarkTheme ? 'dark' : 'light');
         }
 
         // Mobile menu functionality
@@ -2179,6 +2378,12 @@
             if (isMobileView) {
                 closeMobileMenu();
             }
+            
+            // Scroll to top when switching tabs
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         }
 
         // Handle non-response input validation
@@ -2331,6 +2536,14 @@
                 calculatorLayouts.forEach(layout => {
                     layout.style.gridTemplateColumns = '1fr';
                 });
+                
+                // Remove scroll containers on mobile
+                const scrollContainers = document.querySelectorAll('.scroll-container');
+                scrollContainers.forEach(container => {
+                    container.style.height = 'auto';
+                    container.style.overflowY = 'visible';
+                    container.style.paddingRight = '0';
+                });
             }
             
             return isMobileView;
@@ -2338,17 +2551,22 @@
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
-            // Set copyright year
+            // Set copyright year (automatically updates each year)
             document.getElementById('copyrightYear').textContent = new Date().getFullYear();
             
-            // Load saved theme preference
-            const savedTheme = localStorage.getItem('statcalc-theme');
-            if (savedTheme === 'dark') {
-                toggleTheme(); // Switch to dark theme if saved
+            // Load saved theme preference (default to dark)
+            const savedTheme = localStorage.getItem('calcustats-theme');
+            if (savedTheme === 'light') {
+                // Switch to light theme if saved preference is light
+                toggleTheme(); 
             }
+            // If no saved preference, keep dark theme (default)
             
             // Check initial view
             checkMobileView();
+            
+            // Initialize back to top button
+            initBackToTop();
             
             // Theme toggle event listener
             document.getElementById('themeToggle').addEventListener('click', toggleTheme);
@@ -2411,11 +2629,16 @@
             
             // Show welcome notification after a short delay
             setTimeout(() => {
-                showNotification('Welcome to StatCalc Pro!', 'Explore different calculators using the menu button.', 'info');
+                showNotification('Welcome to CalcuStats Lite!', 'Explore different calculators using the menu button.', 'info');
             }, 2000);
             
             // Add resize listener to handle responsive changes
             window.addEventListener('resize', checkMobileView);
+            
+            // Ensure proper layout for current tab on load
+            setTimeout(() => {
+                checkMobileView();
+            }, 100);
         });
 
         // Create initial stratum for proportional allocation
