@@ -181,25 +181,7 @@
             --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             --radius: 12px;
             
-            /* Dark theme colors (default) */
-            --bg-color: #1a1a2e;
-            --card-bg: #2d3047;
-            --text-color: #ffffff;
-            --text-light: #b0b3c1;
-            --header-bg: linear-gradient(135deg, #0d1440 0%, #1a237e 100%);
-            --tabs-bg: #1e2132;
-            --input-bg: #3a3d5a;
-            --input-border: #4a4d6a;
-            --footer-bg: #1e2132;
-            --footer-color: #b0b3c1;
-            --gray: #8a8da8;
-            --light: #2a2d48;
-            --lighter: #3a3d5a;
-            --border: #4a4d6a;
-        }
-
-        /* Light theme colors */
-        .light-theme {
+            /* Light theme colors (default - changed from dark) */
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
             --text-color: #2c3e50;
@@ -214,6 +196,24 @@
             --light: #ecf0f1;
             --lighter: #ffffff;
             --border: #e0e6ed;
+        }
+
+        /* Dark theme colors */
+        .dark-theme {
+            --bg-color: #1a1a2e;
+            --card-bg: #2d3047;
+            --text-color: #ffffff;
+            --text-light: #b0b3c1;
+            --header-bg: linear-gradient(135deg, #0d1440 0%, #1a237e 100%);
+            --tabs-bg: #1e2132;
+            --input-bg: #3a3d5a;
+            --input-border: #4a4d6a;
+            --footer-bg: #1e2132;
+            --footer-color: #b0b3c1;
+            --gray: #8a8da8;
+            --light: #2a2d48;
+            --lighter: #3a3d5a;
+            --border: #4a4d6a;
         }
 
         * {
@@ -335,6 +335,7 @@
             font-size: 1.1rem;
             opacity: 0.9;
             line-height: 1.6;
+            font-weight: 500; /* Increased weight */
         }
 
         body {
@@ -342,7 +343,7 @@
             background: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
-            font-weight: 400;
+            font-weight: 500; /* Increased from 400 for better readability */
             min-height: 100vh;
             padding: 0;
             font-size: 14px;
@@ -414,7 +415,7 @@
         .header-title p {
             font-size: 0.95rem;
             opacity: 0.9;
-            font-weight: 300;
+            font-weight: 400; /* Increased from 300 */
             line-height: 1.5;
         }
 
@@ -668,6 +669,7 @@
             color: var(--text-light);
             max-width: 800px;
             margin: 0 auto;
+            font-weight: 500; /* Increased weight */
         }
 
         .lite-version-notice {
@@ -683,11 +685,13 @@
             color: var(--text-color);
             margin-bottom: 10px;
             font-size: 1.3rem;
+            font-weight: 600;
         }
 
         .lite-version-notice p {
             color: var(--text-light);
             margin-bottom: 15px;
+            font-weight: 500; /* Increased weight */
         }
 
         .original-app-link {
@@ -737,7 +741,6 @@
             justify-content: center;
             color: white;
             font-size: 1.4rem;
-            margin-bottom: 15px;
         }
 
         .feature-card h3 {
@@ -751,6 +754,7 @@
             color: var(--text-light);
             line-height: 1.6;
             font-size: 0.95rem;
+            font-weight: 500; /* Increased weight */
         }
 
         /* Calculator Layout - Two Columns with Independent Scrolling (Desktop) */
@@ -830,6 +834,7 @@
             color: var(--text-light);
             font-size: 0.9rem;
             transition: color 0.3s ease;
+            font-weight: 500; /* Increased weight */
         }
 
         /* Formula Display */
@@ -871,7 +876,7 @@
             border: 1px solid var(--border);
             font-size: 1rem;
             color: var(--text-color);
-            font-weight: 500;
+            font-weight: 600; /* Increased from 500 */
             text-align: center;
             transition: all 0.3s ease;
         }
@@ -881,6 +886,7 @@
             font-size: 0.9rem;
             line-height: 1.6;
             transition: color 0.3s ease;
+            font-weight: 500; /* Increased weight */
         }
 
         /* Input Groups */
@@ -891,7 +897,7 @@
         .input-group label {
             display: block;
             margin-bottom: 8px;
-            font-weight: 500;
+            font-weight: 600; /* Increased from 500 */
             color: var(--text-color);
             font-size: 0.9rem;
             display: flex;
@@ -910,6 +916,7 @@
             transition: all 0.3s ease;
             background: var(--input-bg);
             color: var(--text-color);
+            font-weight: 500; /* Added font weight */
         }
 
         .input-group input:focus, .input-group select:focus {
@@ -931,6 +938,7 @@
             margin-top: 5px;
             font-style: italic;
             transition: color 0.3s ease;
+            font-weight: 500; /* Increased weight */
         }
 
         /* Strata Management */
@@ -1020,7 +1028,7 @@
         .btn {
             padding: 12px 25px;
             font-size: 0.95rem;
-            font-weight: 500;
+            font-weight: 600;
             border: none;
             border-radius: 8px;
             cursor: pointer;
@@ -1076,7 +1084,7 @@
         }
 
         .checkbox-group label {
-            font-weight: 500;
+            font-weight: 600; /* Increased from 500 */
             color: var(--text-color);
             cursor: pointer;
         }
@@ -1126,6 +1134,7 @@
             color: var(--text-light);
             font-size: 0.9rem;
             transition: color 0.3s ease;
+            font-weight: 500; /* Increased weight */
         }
 
         .results-content {
@@ -1158,7 +1167,7 @@
             font-size: 1.3rem;
             margin-bottom: 12px;
             color: var(--text-color);
-            font-weight: 500;
+            font-weight: 600; /* Increased from 500 */
             transition: color 0.3s ease;
         }
 
@@ -1166,6 +1175,7 @@
             font-size: 0.95rem;
             max-width: 350px;
             line-height: 1.6;
+            font-weight: 500; /* Increased weight */
         }
 
         .calculated-results {
@@ -1193,7 +1203,7 @@
             margin-bottom: 6px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            font-weight: 600;
+            font-weight: 700; /* Increased from 600 */
             transition: color 0.3s ease;
         }
 
@@ -1216,6 +1226,7 @@
             border-radius: 8px;
             border-left: 4px solid var(--success);
             transition: all 0.3s ease;
+            font-weight: 500; /* Increased weight */
         }
 
         /* Calculation Steps */
@@ -1242,10 +1253,12 @@
             margin-bottom: 8px;
             color: var(--text-light);
             line-height: 1.5;
+            font-weight: 500; /* Increased weight */
         }
 
         .calculation-steps strong {
             color: var(--text-color);
+            font-weight: 600;
         }
 
         /* Notification */
@@ -1282,13 +1295,14 @@
         .notification-content h4 {
             margin: 0 0 5px 0;
             font-size: 1.1rem;
-            font-weight: 600;
+            font-weight: 700; /* Increased from 600 */
         }
 
         .notification-content p {
             margin: 0;
             font-size: 0.9rem;
             opacity: 0.9;
+            font-weight: 500; /* Increased weight */
         }
 
         @keyframes slideInRight {
@@ -1325,7 +1339,7 @@
             color: var(--secondary);
             text-decoration: none;
             transition: color 0.3s ease;
-            font-weight: 500;
+            font-weight: 600; /* Increased from 500 */
         }
 
         .footer-attribution a:hover {
@@ -1337,6 +1351,7 @@
             margin-top: 8px;
             opacity: 0.8;
             font-size: 0.75rem;
+            font-weight: 500; /* Increased weight */
         }
 
         /* ============================================
@@ -1501,6 +1516,7 @@
             
             .header-title p {
                 font-size: 0.85rem;
+                font-weight: 500; /* Increased weight */
             }
             
             .input-panel, .results-panel {
@@ -1579,10 +1595,12 @@
                 font-size: 0.9rem;
                 padding: 12px;
                 overflow-x: auto;
+                font-weight: 600; /* Increased weight */
             }
             
             .result-value {
                 font-size: 1.5rem;
+                font-weight: 700;
             }
             
             .notification {
@@ -1652,6 +1670,7 @@
             .mobile-tab-btn {
                 padding: 16px 15px;
                 font-size: 0.95rem;
+                font-weight: 500;
             }
             
             /* Further reduce spacing for very small screens */
@@ -1738,7 +1757,7 @@
         }
     </style>
 </head>
-<body class="dark-theme">
+<body class="light-theme"> <!-- Changed from dark-theme to light-theme -->
     <!-- Loading Animation -->
     <div id="loader">
         <div class="loader-content">
@@ -1768,9 +1787,9 @@
             <!-- Theme Toggle -->
             <div class="theme-toggle" id="themeToggle">
                 <div class="theme-icon" id="themeIcon">
-                    <i class="fas fa-sun"></i>
+                    <i class="fas fa-moon"></i> <!-- Changed from sun to moon -->
                 </div>
-                <div class="theme-text" id="themeText">Light Theme</div>
+                <div class="theme-text" id="themeText">Dark Theme</div> <!-- Changed from Light Theme to Dark Theme -->
             </div>
             
             <!-- Mobile Menu Button (Hamburger) -->
@@ -1993,7 +2012,7 @@
 
                 <!-- Right Panel - Results -->
                 <div class="scroll-container">
-                    <div class="results-panel">
+                    <div class="results-panel" id="results-panel-proportional">
                         <div class="results-header">
                             <div class="results-icon">
                                 <i class="fas fa-chart-line"></i>
@@ -2113,7 +2132,7 @@
 
                 <!-- Right Panel - Results -->
                 <div class="scroll-container">
-                    <div class="results-panel">
+                    <div class="results-panel" id="results-panel-yamane">
                         <div class="results-header">
                             <div class="results-icon">
                                 <i class="fas fa-chart-line"></i>
@@ -2256,7 +2275,7 @@
 
                 <!-- Right Panel - Results -->
                 <div class="scroll-container">
-                    <div class="results-panel">
+                    <div class="results-panel" id="results-panel-cochran">
                         <div class="results-header">
                             <div class="results-icon">
                                 <i class="fas fa-chart-line"></i>
@@ -2376,7 +2395,7 @@
 
                 <!-- Right Panel - Results -->
                 <div class="scroll-container">
-                    <div class="results-panel">
+                    <div class="results-panel" id="results-panel-other">
                         <div class="results-header">
                             <div class="results-icon">
                                 <i class="fas fa-chart-line"></i>
@@ -2420,7 +2439,7 @@
     <script>
         // Global variables
         let currentTab = 'home';
-        let isDarkTheme = true; // Default to dark theme
+        let isDarkTheme = false; // Changed from true to false (default to light theme)
         let isMobileView = false;
         let strataCounts = {
             proportional: 1,
@@ -2636,8 +2655,8 @@
             return value;
         }
 
-        // Notification function
-        function showNotification(title, message, type = 'success') {
+        // Notification function with auto-scroll on mobile/tablet
+        function showNotification(title, message, type = 'success', scrollToResults = false) {
             const notification = document.getElementById('notification');
             const icon = document.getElementById('notificationIcon');
             const titleEl = document.getElementById('notificationTitle');
@@ -2667,6 +2686,19 @@
             
             // Show notification
             notification.style.display = 'flex';
+            
+            // Auto-scroll to results panel on mobile/tablet when calculation is complete
+            if (scrollToResults && isMobileView) {
+                setTimeout(() => {
+                    const resultsPanel = document.getElementById(`results-panel-${currentTab}`);
+                    if (resultsPanel) {
+                        resultsPanel.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }, 500);
+            }
             
             // Hide after 4 seconds
             setTimeout(() => {
@@ -2714,13 +2746,13 @@
             // Set copyright year (automatically updates each year)
             document.getElementById('copyrightYear').textContent = new Date().getFullYear();
             
-            // Load saved theme preference (default to dark)
+            // Load saved theme preference (default to light)
             const savedTheme = localStorage.getItem('calcustats-theme');
-            if (savedTheme === 'light') {
-                // Switch to light theme if saved preference is light
+            if (savedTheme === 'dark') {
+                // Switch to dark theme if saved preference is dark
                 toggleTheme(); 
             }
-            // If no saved preference, keep dark theme (default)
+            // If no saved preference, keep light theme (default)
             
             // Check initial view
             checkMobileView();
@@ -3003,7 +3035,7 @@
             return { allocations, stepDetails };
         }
 
-        // Proportional Allocation Calculation with detailed steps
+        // Proportional Allocation Calculation with detailed steps and auto-scroll on mobile
         function calculateProportional() {
             const totalSample = parseFloat(document.getElementById('total-sample').value) || 0;
             const nonResponseInput = document.getElementById('non-response').value.trim();
@@ -3092,7 +3124,7 @@
             `;
             
             showResults('proportional', resultsHTML);
-            showNotification('Proportional Allocation Complete', `Allocated ${adjustedSample} samples across ${strata.length} strata`, 'success');
+            showNotification('Proportional Allocation Complete', `Allocated ${adjustedSample} samples across ${strata.length} strata`, 'success', true);
         }
 
         // Reset Proportional Allocation
@@ -3105,7 +3137,7 @@
             showNotification('Reset Complete', 'Proportional allocation parameters have been reset.', 'info');
         }
 
-        // Taro Yamane Calculation with detailed steps
+        // Taro Yamane Calculation with detailed steps and auto-scroll on mobile
         function calculateYamane() {
             const population = parseFloat(document.getElementById('population-yamane').value) || 0;
             const marginError = parseFloat(document.getElementById('margin-error-yamane').value) || 0.05;
@@ -3226,7 +3258,7 @@
             }
             
             showResults('yamane', resultsHTML);
-            showNotification('Taro Yamane Calculation Complete', `Recommended sample size: ${adjustedSample.toLocaleString()}`, 'success');
+            showNotification('Taro Yamane Calculation Complete', `Recommended sample size: ${adjustedSample.toLocaleString()}`, 'success', true);
         }
 
         // Reset Taro Yamane
@@ -3243,7 +3275,7 @@
             showNotification('Reset Complete', 'Taro Yamane parameters have been reset.', 'info');
         }
 
-        // Enhanced Cochran Formula Calculation with flexible input and detailed steps
+        // Enhanced Cochran Formula Calculation with flexible input and detailed steps and auto-scroll on mobile
         function calculateCochran() {
             const proportionInput = document.getElementById('proportion-cochran').value.trim();
             const zScore = parseFloat(document.getElementById('z-score-cochran').value) || 1.96;
@@ -3411,7 +3443,7 @@
             }
             
             showResults('cochran', resultsHTML);
-            showNotification('Cochran Calculation Complete', `Recommended sample size: ${adjustedSample.toLocaleString()}`, 'success');
+            showNotification('Cochran Calculation Complete', `Recommended sample size: ${adjustedSample.toLocaleString()}`, 'success', true);
         }
 
         // Reset Cochran Formula
@@ -3687,7 +3719,7 @@
             }, 100);
         }
 
-        // Other Formulas Calculation with enhanced proportion parsing and detailed steps
+        // Other Formulas Calculation with enhanced proportion parsing and detailed steps and auto-scroll on mobile
         function calculateOther() {
             const formulaType = document.getElementById('formula-type').value;
             const nonResponseInput = document.getElementById('non-response-other').value.trim();
@@ -3959,7 +3991,7 @@
             }
             
             showResults('other', resultsHTML);
-            showNotification('Calculation Complete', `${formulaName}: ${adjustedSample.toLocaleString()} samples recommended`, 'success');
+            showNotification('Calculation Complete', `${formulaName}: ${adjustedSample.toLocaleString()} samples recommended`, 'success', true);
         }
 
         // Reset Other Formulas
