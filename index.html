@@ -222,10 +222,27 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            font-weight: 500;
+            font-size: 14px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
         /* Back to Top Button */
         #backToTop {
             position: fixed;
-            bottom: 30px;
+            bottom: 100px;
             right: 30px;
             width: 60px;
             height: 60px;
@@ -335,29 +352,16 @@
             font-size: 1.1rem;
             opacity: 0.9;
             line-height: 1.6;
-            font-weight: 500; /* Increased weight */
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            font-weight: 500; /* Increased from 400 for better readability */
-            min-height: 100vh;
-            padding: 0;
-            font-size: 14px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            display: flex;
-            flex-direction: column;
+            font-weight: 500;
         }
 
         /* Container for main content */
         .main-container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 20px 30px;
-            flex: 1;
+            padding: 20px 30px 40px;
+            flex: 1 0 auto;
+            width: 100%;
         }
 
         /* Full Width Header with Tabs */
@@ -368,6 +372,7 @@
             position: relative;
             z-index: 100;
             width: 100%;
+            flex-shrink: 0;
         }
 
         .header-content {
@@ -415,7 +420,7 @@
         .header-title p {
             font-size: 0.95rem;
             opacity: 0.9;
-            font-weight: 400; /* Increased from 300 */
+            font-weight: 400;
             line-height: 1.5;
         }
 
@@ -446,306 +451,239 @@
             font-size: 0.9rem;
         }
         
-        /* Footer Styles - Inspired by www.mudasiribrahim.com */
-.site-footer {
-    background: var(--footer-bg);
-    color: var(--footer-color);
-    padding: 50px 0 20px;
-    margin-top: 60px;
-    font-family: 'Inter', sans-serif;
-}
+        /* Footer Styles - Fixed to bottom */
+        .site-footer {
+            background: var(--footer-bg);
+            color: var(--footer-color);
+            padding: 40px 0 20px;
+            font-family: 'Inter', sans-serif;
+            width: 100%;
+            flex-shrink: 0;
+            margin-top: auto;
+        }
 
-.footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
-.footer-content {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 50px;
-    margin-bottom: 40px;
-}
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 40px;
+        }
 
-.footer-section {
-    display: flex;
-    flex-direction: column;
-}
+        .footer-section {
+            display: flex;
+            flex-direction: column;
+        }
 
-.footer-logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
-}
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
 
-.footer-logo i {
-    font-size: 2.2rem;
-    color: var(--secondary);
-    background: rgba(255, 255, 255, 0.1);
-    padding: 12px;
-    border-radius: 12px;
-}
+        .footer-logo i {
+            font-size: 2.2rem;
+            color: var(--secondary);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 12px;
+        }
 
-.footer-logo h3 {
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: white;
-    margin: 0;
-}
+        .footer-logo h3 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: white;
+            margin: 0;
+        }
 
-.lite-text {
-    color: var(--secondary);
-    font-weight: 300;
-}
+        .lite-text {
+            color: var(--secondary);
+            font-weight: 300;
+        }
 
-.footer-description {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
+        .footer-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
 
-.footer-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 10px;
-}
+        .footer-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
 
-.badge {
-    background: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.9);
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-}
+        .badge {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
 
-.badge i {
-    font-size: 0.8rem;
-    color: var(--secondary);
-}
+        .badge i {
+            font-size: 0.8rem;
+            color: var(--secondary);
+        }
 
-.footer-section h4 {
-    color: white;
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 20px;
-    position: relative;
-    padding-bottom: 10px;
-}
+        .footer-section h4 {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
 
-.footer-section h4::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 40px;
-    height: 2px;
-    background: var(--secondary);
-}
+        .footer-section h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--secondary);
+        }
 
-.footer-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-.footer-links li {
-    margin-bottom: 12px;
-}
+        .footer-links li {
+            margin-bottom: 12px;
+        }
 
-.footer-links a {
-    color: rgba(255, 255, 255, 0.7);
-    text-decoration: none;
-    font-size: 0.95rem;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-.footer-links a:hover {
-    color: white;
-    transform: translateX(5px);
-}
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
 
-.footer-links a i {
-    width: 20px;
-    font-size: 0.9rem;
-}
+        .footer-links a i {
+            width: 20px;
+            font-size: 0.9rem;
+        }
 
-.social-links {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 25px;
-}
+        .social-links {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
 
-.social-links a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    color: white;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    text-decoration: none;
-}
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
 
-.social-links a:hover {
-    background: var(--secondary);
-    transform: translateY(-3px);
-}
+        .social-links a:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
 
-.full-version-cta {
-    margin-top: 15px;
-}
+        .full-version-cta {
+            margin-top: 15px;
+        }
 
-.full-version-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    border: none;
-    cursor: pointer;
-}
+        .full-version-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
 
-.full-version-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
-}
+        .full-version-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
+        }
 
-.footer-bottom {
-    padding-top: 30px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
+        .footer-bottom {
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-.copyright {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.85rem;
-    line-height: 1.6;
-    text-align: center;
-}
+        .copyright {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            text-align: center;
+        }
 
-.copyright a {
-    color: var(--secondary);
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.3s ease;
-}
+        .copyright a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
 
-.copyright a:hover {
-    color: white;
-    text-decoration: underline;
-}
+        .copyright a:hover {
+            color: white;
+            text-decoration: underline;
+        }
 
-/* Light theme adjustments */
-.light-theme .site-footer {
-    background: var(--footer-bg);
-}
+        /* Light theme adjustments */
+        .light-theme .site-footer {
+            background: var(--footer-bg);
+        }
 
-.light-theme .footer-logo h3 {
-    color: var(--text-color);
-}
+        .light-theme .footer-logo h3 {
+            color: var(--text-color);
+        }
 
-.light-theme .footer-description,
-.light-theme .copyright,
-.light-theme .footer-links a,
-.light-theme .badge {
-    color: rgba(255, 255, 255, 0.9);
-}
+        .light-theme .footer-description,
+        .light-theme .copyright,
+        .light-theme .footer-links a,
+        .light-theme .badge {
+            color: rgba(255, 255, 255, 0.9);
+        }
 
-.light-theme .badge {
-    background: rgba(255, 255, 255, 0.15);
-}
+        .light-theme .badge {
+            background: rgba(255, 255, 255, 0.15);
+        }
 
-.light-theme .social-links a {
-    background: rgba(255, 255, 255, 0.15);
-}
-
-/* Responsive Design */
-@media (max-width: 992px) {
-    .footer-content {
-        grid-template-columns: 1fr 1fr;
-        gap: 40px;
-    }
-    
-    .footer-section:first-child {
-        grid-column: 1 / -1;
-    }
-}
-
-@media (max-width: 768px) {
-    .footer-content {
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
-    
-    .site-footer {
-        padding: 40px 0 20px;
-    }
-    
-    .footer-container {
-        padding: 0 15px;
-    }
-    
-    .footer-badges {
-        justify-content: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .footer-content {
-        gap: 25px;
-    }
-    
-    .footer-logo {
-        justify-content: center;
-        text-align: center;
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .footer-description {
-        text-align: center;
-    }
-    
-    .footer-section h4 {
-        text-align: center;
-    }
-    
-    .footer-section h4::after {
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    
-    .social-links {
-        justify-content: center;
-    }
-    
-    .full-version-cta {
-        text-align: center;
-    }
-    
-    .copyright {
-        font-size: 0.8rem;
-    }
-}
+        .light-theme .social-links a {
+            background: rgba(255, 255, 255, 0.15);
+        }
 
         /* Mobile Menu Button (Hamburger) */
         .mobile-menu-btn {
@@ -970,7 +908,7 @@
             color: var(--text-light);
             max-width: 800px;
             margin: 0 auto;
-            font-weight: 500; /* Increased weight */
+            font-weight: 500;
         }
 
         .lite-version-notice {
@@ -992,7 +930,7 @@
         .lite-version-notice p {
             color: var(--text-light);
             margin-bottom: 15px;
-            font-weight: 500; /* Increased weight */
+            font-weight: 500;
         }
 
         .original-app-link {
@@ -1055,7 +993,7 @@
             color: var(--text-light);
             line-height: 1.6;
             font-size: 0.95rem;
-            font-weight: 500; /* Increased weight */
+            font-weight: 500;
         }
 
         /* Calculator Layout - Two Columns with Independent Scrolling (Desktop) */
@@ -1135,7 +1073,7 @@
             color: var(--text-light);
             font-size: 0.9rem;
             transition: color 0.3s ease;
-            font-weight: 500; /* Increased weight */
+            font-weight: 500;
         }
 
         /* Formula Display */
@@ -1177,7 +1115,7 @@
             border: 1px solid var(--border);
             font-size: 1rem;
             color: var(--text-color);
-            font-weight: 600; /* Increased from 500 */
+            font-weight: 600;
             text-align: center;
             transition: all 0.3s ease;
         }
@@ -1187,7 +1125,7 @@
             font-size: 0.9rem;
             line-height: 1.6;
             transition: color 0.3s ease;
-            font-weight: 500; /* Increased weight */
+            font-weight: 500;
         }
 
         /* Input Groups */
@@ -1198,7 +1136,7 @@
         .input-group label {
             display: block;
             margin-bottom: 8px;
-            font-weight: 600; /* Increased from 500 */
+            font-weight: 600;
             color: var(--text-color);
             font-size: 0.9rem;
             display: flex;
@@ -1217,7 +1155,7 @@
             transition: all 0.3s ease;
             background: var(--input-bg);
             color: var(--text-color);
-            font-weight: 500; /* Added font weight */
+            font-weight: 500;
         }
 
         .input-group input:focus, .input-group select:focus {
@@ -1239,7 +1177,7 @@
             margin-top: 5px;
             font-style: italic;
             transition: color 0.3s ease;
-            font-weight: 500; /* Increased weight */
+            font-weight: 500;
         }
 
         /* Strata Management */
@@ -1385,7 +1323,7 @@
         }
 
         .checkbox-group label {
-            font-weight: 600; /* Increased from 500 */
+            font-weight: 600;
             color: var(--text-color);
             cursor: pointer;
         }
@@ -1435,7 +1373,7 @@
             color: var(--text-light);
             font-size: 0.9rem;
             transition: color 0.3s ease;
-            font-weight: 500; /* Increased weight */
+            font-weight: 500;
         }
 
         .results-content {
@@ -1468,7 +1406,7 @@
             font-size: 1.3rem;
             margin-bottom: 12px;
             color: var(--text-color);
-            font-weight: 600; /* Increased from 500 */
+            font-weight: 600;
             transition: color 0.3s ease;
         }
 
@@ -1476,7 +1414,7 @@
             font-size: 0.95rem;
             max-width: 350px;
             line-height: 1.6;
-            font-weight: 500; /* Increased weight */
+            font-weight: 500;
         }
 
         .calculated-results {
@@ -1504,7 +1442,7 @@
             margin-bottom: 6px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            font-weight: 700; /* Increased from 600 */
+            font-weight: 700;
             transition: color 0.3s ease;
         }
 
@@ -1527,7 +1465,7 @@
             border-radius: 8px;
             border-left: 4px solid var(--success);
             transition: all 0.3s ease;
-            font-weight: 500; /* Increased weight */
+            font-weight: 500;
         }
 
         /* Calculation Steps */
@@ -1554,7 +1492,7 @@
             margin-bottom: 8px;
             color: var(--text-light);
             line-height: 1.5;
-            font-weight: 500; /* Increased weight */
+            font-weight: 500;
         }
 
         .calculation-steps strong {
@@ -1596,14 +1534,14 @@
         .notification-content h4 {
             margin: 0 0 5px 0;
             font-size: 1.1rem;
-            font-weight: 700; /* Increased from 600 */
+            font-weight: 700;
         }
 
         .notification-content p {
             margin: 0;
             font-size: 0.9rem;
             opacity: 0.9;
-            font-weight: 500; /* Increased weight */
+            font-weight: 500;
         }
 
         @keyframes slideInRight {
@@ -1617,98 +1555,43 @@
         }
         
         /* Reduce spacing in Cochran formula card */
-#cochran-tab .input-panel {
-    padding: 25px 30px;
-}
-
-#cochran-tab .formula-display {
-    padding: 15px 20px;
-    margin-bottom: 20px;
-}
-
-#cochran-tab .formula-description {
-    font-size: 0.85rem;
-    line-height: 1.5;
-    margin-top: 10px;
-}
-
-#cochran-tab .input-group {
-    margin-bottom: 18px;
-}
-
-#cochran-tab .format-hint {
-    font-size: 0.7rem;
-    margin-top: 4px;
-    line-height: 1.3;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    background-color: rgba(52, 152, 219, 0.1);
-    padding: 3px 8px;
-    border-radius: 4px;
-    border-left: 2px solid #3498db;
-    font-weight: 600;
-    color: var(--text-color);
-}
-
-#cochran-tab .input-row {
-    gap: 15px;
-    margin-bottom: 18px;
-}
-
-/* For mobile view */
-@media (max-width: 767px) {
-    #cochran-tab .input-panel {
-        padding: 20px;
-    }
-    
-    #cochran-tab .formula-display {
-        padding: 12px 15px;
-        margin-bottom: 15px;
-    }
-    
-    #cochran-tab .formula-description {
-        font-size: 0.8rem;
-    }
-}
-
-        /* Footer - Same as tabs background */
-        .site-footer {
-            background: var(--footer-bg);
-            color: var(--footer-color);
-            padding: 20px 0;
-            width: 100%;
-            margin-top: auto;
+        #cochran-tab .input-panel {
+            padding: 25px 30px;
         }
 
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 30px;
-            text-align: center;
+        #cochran-tab .formula-display {
+            padding: 15px 20px;
+            margin-bottom: 20px;
         }
 
-        .footer-attribution {
-            margin-bottom: 8px;
+        #cochran-tab .formula-description {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-top: 10px;
         }
 
-        .footer-attribution a {
-            color: var(--secondary);
-            text-decoration: none;
-            transition: color 0.3s ease;
-            font-weight: 600; /* Increased from 500 */
+        #cochran-tab .input-group {
+            margin-bottom: 18px;
         }
 
-        .footer-attribution a:hover {
-            color: var(--accent);
-            text-decoration: underline;
+        #cochran-tab .format-hint {
+            font-size: 0.7rem;
+            margin-top: 4px;
+            line-height: 1.3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 3px 8px;
+            border-radius: 4px;
+            border-left: 2px solid #3498db;
+            font-weight: 600;
+            color: var(--text-color);
         }
 
-        .footer-copyright {
-            margin-top: 8px;
-            opacity: 0.8;
-            font-size: 0.75rem;
-            font-weight: 500; /* Increased weight */
+        #cochran-tab .input-row {
+            gap: 15px;
+            margin-bottom: 18px;
         }
 
         /* ============================================
@@ -1818,6 +1701,11 @@
             .home-content {
                 padding: 30px;
             }
+            
+            .footer-content {
+                grid-template-columns: 2fr 1fr 1fr;
+                gap: 40px;
+            }
         }
 
         /* Mobile: Below 768px */
@@ -1873,7 +1761,7 @@
             
             .header-title p {
                 font-size: 0.85rem;
-                font-weight: 500; /* Increased weight */
+                font-weight: 500;
             }
             
             .input-panel, .results-panel {
@@ -1952,7 +1840,7 @@
                 font-size: 0.9rem;
                 padding: 12px;
                 overflow-x: auto;
-                font-weight: 600; /* Increased weight */
+                font-weight: 600;
             }
             
             .result-value {
@@ -1969,7 +1857,41 @@
             }
             
             .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
                 padding: 0 15px;
+            }
+            
+            .footer-logo {
+                justify-content: center;
+                text-align: center;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .footer-description {
+                text-align: center;
+            }
+            
+            .footer-section h4 {
+                text-align: center;
+            }
+            
+            .footer-section h4::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .social-links {
+                justify-content: center;
+            }
+            
+            .full-version-cta {
+                text-align: center;
+            }
+            
+            .copyright {
+                font-size: 0.8rem;
             }
             
             /* Fix for mobile scrolling issues - reduce card spacing */
@@ -2051,11 +1973,19 @@
             
             /* Back to top button for mobile */
             #backToTop {
-                bottom: 20px;
-                right: 20px;
+                bottom: 90px;
+                right: 15px;
                 width: 50px;
                 height: 50px;
                 font-size: 1.3rem;
+            }
+            
+            .site-footer {
+                padding: 30px 0 15px;
+            }
+            
+            .footer-content {
+                gap: 25px;
             }
         }
 
@@ -2094,11 +2024,15 @@
             
             /* Back to top button for extra small screens */
             #backToTop {
-                bottom: 15px;
-                right: 15px;
+                bottom: 85px;
+                right: 10px;
                 width: 45px;
                 height: 45px;
                 font-size: 1.2rem;
+            }
+            
+            .site-footer {
+                padding: 20px 0 10px;
             }
         }
 
@@ -2111,10 +2045,14 @@
             .mobile-menu-content {
                 width: 250px;
             }
+            
+            #backToTop {
+                bottom: 70px;
+            }
         }
     </style>
 </head>
-<body class="light-theme"> <!-- Changed from dark-theme to light-theme -->
+<body class="light-theme">
     <!-- Loading Animation -->
     <div id="loader">
         <div class="loader-content">
@@ -2144,9 +2082,9 @@
             <!-- Theme Toggle -->
             <div class="theme-toggle" id="themeToggle">
                 <div class="theme-icon" id="themeIcon">
-                    <i class="fas fa-moon"></i> <!-- Changed from sun to moon -->
+                    <i class="fas fa-moon"></i>
                 </div>
-                <div class="theme-text" id="themeText">Dark Theme</div> <!-- Changed from Light Theme to Dark Theme -->
+                <div class="theme-text" id="themeText">Dark Theme</div>
             </div>
             
             <!-- Mobile Menu Button (Hamburger) -->
@@ -2779,79 +2717,78 @@
         <i class="fas fa-arrow-up"></i>
     </div>
 
-    <!-- Site Footer (only shows on Home tab) -->
-   <footer class="site-footer" id="siteFooter">
-    <div class="footer-container">
-        <div class="footer-content">
-            <div class="footer-section">
-                <div class="footer-logo">
-                    <i class="fas fa-calculator"></i>
-                    <h3><span class="lite-text"> CalcuStats Lite</span></h3>
-                </div>
-                <p class="footer-description">
-                    Free sample size calculator suite for research. 
-                </p>
-                <div class="footer-badges">
-                    <span class="badge"><i class="fas fa-check-circle"></i> Free to Use</span>
-                    <span class="badge"><i class="fas fa-mobile-alt"></i> Mobile Friendly</span>
-                    <span class="badge"><i class="fas fa-shield-alt"></i> No Ads</span>
-                </div>
-            </div>
-            
-            <div class="footer-section">
-                <h4>Quick Links</h4>
-                <ul class="footer-links">
-                    <li><a href="javascript:void(0)" onclick="switchTab('home')"><i class="fas fa-home"></i> Home</a></li>
-                    <li><a href="javascript:void(0)" onclick="switchTab('proportional')"><i class="fas fa-chart-pie"></i> Proportional</a></li>
-                    <li><a href="javascript:void(0)" onclick="switchTab('yamane')"><i class="fas fa-calculator"></i> Yamane</a></li>
-                    <li><a href="javascript:void(0)" onclick="switchTab('cochran')"><i class="fas fa-percentage"></i> Cochran</a></li>
-                    <li><a href="javascript:void(0)" onclick="switchTab('other')"><i class="fas fa-shapes"></i> Other</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h4>Connect</h4>
-                <div class="social-links">
-                    <a href="https://www.mudasiribrahim.com/" target="_blank" rel="noopener noreferrer" title="Portfolio">
-                        <i class="fas fa-globe"></i>
-                    </a>
-                    <a href="https://orcid.org/0000-0002-9049-8222" target="_blank" rel="noopener noreferrer" title="ORCID">
-                        <i class="fab fa-orcid"></i>
-                    </a>
-                    <a href="https://scholar.google.com/citations?user=xEFzAvgAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" title="Google Scholar">
-                        <i class="fas fa-graduation-cap"></i>
-                    </a>
-                    <a href="https://github.com/mudassiribrahim30" target="_blank" rel="noopener noreferrer" title="GitHub">
-                        <i class="fab fa-github"></i>
-                    </a>
+    <!-- Site Footer - Always Visible -->
+    <footer class="site-footer" id="siteFooter">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-calculator"></i>
+                        <h3><span class="lite-text"> CalcuStats Lite</span></h3>
+                    </div>
+                    <p class="footer-description">
+                        Free sample size calculator suite for research 
+                    </p>
+                    <div class="footer-badges">
+                        <span class="badge"><i class="fas fa-check-circle"></i> Free to Use</span>
+                        <span class="badge"><i class="fas fa-mobile-alt"></i> Mobile Friendly</span>
+                        <span class="badge"><i class="fas fa-shield-alt"></i> No Ads</span>
+                    </div>
                 </div>
                 
-                <div class="full-version-cta">
-                    <a href="https://mudassiribrahim2025.shinyapps.io/CalcuStats/" target="_blank" rel="noopener noreferrer" class="full-version-btn">
-                        <i class="fas fa-rocket"></i>
-                        Try Full Version
-                    </a>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="javascript:void(0)" onclick="switchTab('home')"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="javascript:void(0)" onclick="switchTab('proportional')"><i class="fas fa-chart-pie"></i> Proportional</a></li>
+                        <li><a href="javascript:void(0)" onclick="switchTab('yamane')"><i class="fas fa-calculator"></i> Yamane</a></li>
+                        <li><a href="javascript:void(0)" onclick="switchTab('cochran')"><i class="fas fa-percentage"></i> Cochran</a></li>
+                        <li><a href="javascript:void(0)" onclick="switchTab('other')"><i class="fas fa-shapes"></i> Other</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="https://www.mudasiribrahim.com/" target="_blank" rel="noopener noreferrer" title="Portfolio">
+                            <i class="fas fa-globe"></i>
+                        </a>
+                        <a href="https://orcid.org/0000-0002-9049-8222" target="_blank" rel="noopener noreferrer" title="ORCID">
+                            <i class="fab fa-orcid"></i>
+                        </a>
+                        <a href="https://scholar.google.com/citations?user=xEFzAvgAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" title="Google Scholar">
+                            <i class="fas fa-graduation-cap"></i>
+                        </a>
+                        <a href="https://github.com/mudassiribrahim30" target="_blank" rel="noopener noreferrer" title="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="full-version-cta">
+                        <a href="https://mudassiribrahim2025.shinyapps.io/CalcuStats/" target="_blank" rel="noopener noreferrer" class="full-version-btn">
+                            <i class="fas fa-rocket"></i>
+                            Try CalcuStats (Full Version)
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    <p>Copyright © <span id="copyrightYear"></span> CalcuStats Lite. A simplified version of CalcuStats
+                    created by 
+                    <a href="https://www.mudasiribrahim.com/" target="_blank" rel="noopener noreferrer">Mudasir Mohammed Ibrahim</a>.
+                    Built with ❤️ in Ghana.
+                    </p>
                 </div>
             </div>
         </div>
-        
-        <div class="footer-bottom">
-            <div class="copyright">
-                <p>Copyright © <span id="copyrightYear"></span> CalcuStats Lite. A simplified version of 
-                <a href="https://mudassiribrahim2025.shinyapps.io/CalcuStats/" target="_blank" rel="noopener noreferrer">CalcuStats</a> 
-                created by 
-                <a href="https://www.mudasiribrahim.com/" target="_blank" rel="noopener noreferrer">Mudasir Mohammed Ibrahim</a>.
-                Built with ❤️ in Ghana.
-                </p>
-            </div>
-        </div>
-    </div>
-</footer>
+    </footer>
 
     <script>
         // Global variables
         let currentTab = 'home';
-        let isDarkTheme = false; // Changed from true to false (default to light theme)
+        let isDarkTheme = false;
         let isMobileView = false;
         let strataCounts = {
             proportional: 1,
@@ -2946,14 +2883,6 @@
             
             // Show selected tab content
             document.getElementById(`${currentTab}-tab`).classList.add('active');
-            
-            // Show/hide footer based on tab
-            const footer = document.getElementById('siteFooter');
-            if (currentTab === 'home') {
-                footer.style.display = 'block';
-            } else {
-                footer.style.display = 'none';
-            }
             
             // Clear results for the new tab (if not home)
             if (currentTab !== 'home') {
@@ -3373,16 +3302,26 @@
 
         // Clear results for a specific tab
         function clearResults(tabName) {
-            document.getElementById(`${tabName}-no-results`).style.display = 'flex';
-            document.getElementById(`${tabName}-results`).style.display = 'none';
-            document.getElementById(`${tabName}-results`).innerHTML = '';
+            const noResults = document.getElementById(`${tabName}-no-results`);
+            const results = document.getElementById(`${tabName}-results`);
+            
+            if (noResults) noResults.style.display = 'flex';
+            if (results) {
+                results.style.display = 'none';
+                results.innerHTML = '';
+            }
         }
 
         // Show results for a specific tab
         function showResults(tabName, resultsHTML) {
-            document.getElementById(`${tabName}-no-results`).style.display = 'none';
-            document.getElementById(`${tabName}-results`).innerHTML = resultsHTML;
-            document.getElementById(`${tabName}-results`).style.display = 'block';
+            const noResults = document.getElementById(`${tabName}-no-results`);
+            const results = document.getElementById(`${tabName}-results`);
+            
+            if (noResults) noResults.style.display = 'none';
+            if (results) {
+                results.innerHTML = resultsHTML;
+                results.style.display = 'block';
+            }
         }
 
         // Get strata data for a specific tab
