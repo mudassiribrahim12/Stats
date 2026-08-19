@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use CalcuStats in your research, publication, or teaching, please cite it as below."
+authors:
+- family-names: "Ibrahim"
+  given-names: "Mudasir Mohammed"
+  orcid: "https://orcid.org/0000-0002-9049-8222"
+title: "CalcuStats: A free, user-friendly, browser-based web application for sample size calculation and statistical analysis"
+abstract: Sample size calculation and statistical analysis are essential components of health and social science research, yet existing tools often present technical, financial, and accessibility barriers. CalcuStats is a free, user-friendly, browser-based, open-source web application that supports sample size calculations (proportional allocation, Taro Yamane formula, Cochran's formula, and other formulas) alongside comprehensive descriptive and inferential statistical analyses. With CalcuStats, researchers can perform t-tests, ANOVA, regression (linear, logistic, Poisson, multinomial), chi-square, Fisher's exact, non-parametric tests, correlation analyses, and more. Users can export outputs to Excel or Word, generate publication-ready flowcharts, and copy formatted results to clipboard with a single click.
+date-released: August, 2026
+url: https://github.com/shinyhealthtools/calcustats
