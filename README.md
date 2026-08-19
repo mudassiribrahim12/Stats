@@ -58,8 +58,3 @@ Built by a health researcher for researchers, CalcuStats bridges the gap between
 - **Charting** — Native Canvas API for high‑quality graphs and flowcharts.
 - **Export** — SheetJS (XLSX) for Excel exports and Blob API for Word `.doc` files.
 - **Deployment** — GitHub Pages & Vercel.
-
-## 📥 Getting Started
-
-### Using the Live Application
-Simply navigate to [CalcuStats](https://shinyhealthtools.github.io/calcustats/) and start analysing.
