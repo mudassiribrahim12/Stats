@@ -1,8 +1,6 @@
 # CalcuStats — Free Sample Size Calculator & Statistical Analysis Software
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://shinyhealthtools.github.io/calcustats/)
-[![Vercel Deployment](https://img.shields.io/badge/deployed%20on-vercel-black)](https://calcustats.vercel.app/)
 
 **Calculate. Analyze. Publish.** — A complete, free, and modern web‑based sample size calculator and statistical suite for researchers, data analysts, and students.
 
